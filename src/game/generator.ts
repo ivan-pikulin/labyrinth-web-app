@@ -9,41 +9,38 @@ import {
   WallType,
   Monster,
   GameConfig,
+  ResolvedGameConfig,
+  Range,
   positionToKey,
 } from '@/types';
 import { createRandom, Random } from '@/utils/random';
 
-const DEFAULT_CONFIG: Required<GameConfig> = {
-  seed: Date.now(),
-  width: 0, // 0 = random 3-8
-  height: 0,
-  floors: 0,
-  playerHealth: 5,
-  playerArrows: 5,
-  playerBombs: 2,
-  arsenalSlots: 1,
-  dragonCount: 2,
-  dragonHealth: 5,
-  dragonDamage: 1,
-  archerCount: 0,
-  archerHealth: 5,
-  archerDamage: 1,
-  portalCount: 5,
-  mineCount: 1,
-  mineDamage: 1,
-  hospitalCount: 1,
-  arsenalCount: 1,
-  deathLimit: 0,
-  respawnHealthPercent: 80,
-  arrowDamage: 1,
-  doublegunMultiplier: 2,
-  dragonRingHealthBonus: 1,
-  bagSlotBonus: 1,
-  spawnLocation: 'graveyard',
-};
+// Helper to check if value is a Range
+function isRange(value: unknown): value is Range {
+  return typeof value === 'object' && value !== null && 'min' in value && 'max' in value;
+}
 
-export function mergeConfig(config: GameConfig): Required<GameConfig> {
-  return { ...DEFAULT_CONFIG, ...config };
+// Resolve range or number value using random
+function resolveRangeValue(value: number | Range | undefined, random: Random, defaultMin: number, defaultMax: number): number {
+  if (value === undefined) {
+    return random.int(defaultMin, defaultMax);
+  }
+  if (isRange(value)) {
+    return random.int(value.min, value.max);
+  }
+  return value;
+}
+
+// Calculate auto values based on labyrinth size
+function calculateAutoValues(width: number, height: number, floors: number) {
+  const totalCells = width * height * floors;
+
+  return {
+    dragonCount: Math.max(1, Math.floor(totalCells / 15)),
+    archerCount: Math.max(0, Math.floor(totalCells / 25)),
+    portalCount: Math.max(2, Math.floor(totalCells / 8)),
+    mineCount: Math.max(1, Math.floor(totalCells / 20)),
+  };
 }
 
 function generateId(): string {
@@ -161,17 +158,48 @@ export interface GeneratorResult {
   monsters: Monster[];
   graveyardPosition: Position;
   goldPosition: Position;
-  config: Required<GameConfig>;
+  config: ResolvedGameConfig;
 }
 
 export function generateLabyrinth(userConfig: GameConfig = {}): GeneratorResult {
-  const config = mergeConfig(userConfig);
-  const random = createRandom(config.seed);
+  const random = createRandom(Date.now());
 
-  // Determine dimensions
-  const width = config.width || random.int(3, 8);
-  const height = config.height || random.int(3, 8);
-  const floors = config.floors || random.int(1, 3);
+  // Determine dimensions (handle Range types)
+  const width = resolveRangeValue(userConfig.width, random, 3, 6);
+  const height = resolveRangeValue(userConfig.height, random, 3, 6);
+  const floors = resolveRangeValue(userConfig.floors, random, 1, 2);
+
+  // Calculate auto values based on labyrinth size
+  const autoValues = calculateAutoValues(width, height, floors);
+
+  // Build resolved config
+  const config: ResolvedGameConfig = {
+    width,
+    height,
+    floors,
+    playerHealth: userConfig.playerHealth ?? 5,
+    playerArrows: userConfig.playerArrows ?? 5,
+    playerBombs: userConfig.playerBombs ?? 2,
+    arsenalSlots: userConfig.arsenalSlots ?? 1,
+    dragonCount: userConfig.dragonCount ?? autoValues.dragonCount,
+    dragonHealth: userConfig.dragonHealth ?? 5,
+    dragonDamage: userConfig.dragonDamage ?? 1,
+    archerCount: userConfig.archerCount ?? autoValues.archerCount,
+    archerHealth: userConfig.archerHealth ?? 5,
+    archerDamage: userConfig.archerDamage ?? 1,
+    portalCount: userConfig.portalCount ?? autoValues.portalCount,
+    mineCount: userConfig.mineCount ?? autoValues.mineCount,
+    mineDamage: userConfig.mineDamage ?? 1,
+    hospitalCount: userConfig.hospitalCount ?? 1,
+    arsenalCount: userConfig.arsenalCount ?? 1,
+    deathLimit: userConfig.deathLimit ?? 0,
+    respawnHealthPercent: userConfig.respawnHealthPercent ?? 80,
+    arrowDamage: userConfig.arrowDamage ?? 1,
+    doublegunMultiplier: userConfig.doublegunMultiplier ?? 2,
+    dragonRingHealthBonus: userConfig.dragonRingHealthBonus ?? 1,
+    bagSlotBonus: userConfig.bagSlotBonus ?? 1,
+    spawnLocation: userConfig.spawnLocation ?? 'graveyard',
+  };
 
   // Create empty cells
   const cells: Cell[][][] = [];
@@ -325,6 +353,6 @@ export function generateLabyrinth(userConfig: GameConfig = {}): GeneratorResult 
     monsters,
     graveyardPosition: graveyardPos,
     goldPosition: goldPos,
-    config: { ...config, width, height, floors },
+    config,
   };
 }

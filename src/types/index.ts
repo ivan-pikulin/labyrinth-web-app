@@ -137,12 +137,17 @@ export interface Labyrinth {
   portalPositions: Position[];
 }
 
+// ===== ДИАПАЗОН ЗНАЧЕНИЙ =====
+export interface Range {
+  min: number;
+  max: number;
+}
+
 // ===== НАСТРОЙКИ ИГРЫ =====
 export interface GameConfig {
-  seed?: number;
-  width?: number;
-  height?: number;
-  floors?: number;
+  width?: number | Range;
+  height?: number | Range;
+  floors?: number | Range;
   playerHealth?: number;
   playerArrows?: number;
   playerBombs?: number;
@@ -167,6 +172,36 @@ export interface GameConfig {
   spawnLocation?: 'graveyard' | 'random';
 }
 
+// ===== РАЗРЕШЁННЫЕ НАСТРОЙКИ =====
+// Тип для конфига после обработки - все значения разрешены в числа
+export interface ResolvedGameConfig {
+  width: number;
+  height: number;
+  floors: number;
+  playerHealth: number;
+  playerArrows: number;
+  playerBombs: number;
+  arsenalSlots: number;
+  dragonCount: number;
+  dragonHealth: number;
+  dragonDamage: number;
+  archerCount: number;
+  archerHealth: number;
+  archerDamage: number;
+  portalCount: number;
+  mineCount: number;
+  mineDamage: number;
+  hospitalCount: number;
+  arsenalCount: number;
+  deathLimit: number;
+  respawnHealthPercent: number;
+  arrowDamage: number;
+  doublegunMultiplier: number;
+  dragonRingHealthBonus: number;
+  bagSlotBonus: number;
+  spawnLocation: 'graveyard' | 'random';
+}
+
 // ===== СОСТОЯНИЕ ИГРЫ =====
 export interface GameState {
   labyrinth: Labyrinth;
@@ -181,7 +216,7 @@ export interface GameState {
   actionMode: ActionMode;
   logs: LogMessage[];
   arsenalItems: ItemType[];
-  config: Required<GameConfig>;
+  config: ResolvedGameConfig;
 }
 
 // ===== УТИЛИТЫ =====

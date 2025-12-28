@@ -1,3 +1,7 @@
+/* ═══════════════════════════════════════════════════════════════
+   SETTINGS SCREEN — Ancient Grimoire Configuration
+   ═══════════════════════════════════════════════════════════════ */
+
 .overlay {
   position: fixed;
   top: 0;
@@ -22,61 +26,297 @@
   background: var(--color-bg-secondary);
   border: 2px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 32px;
-  max-width: 700px;
+  max-width: 500px;
   width: 100%;
   max-height: 90vh;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+}
+
+/* ─────────────────── Header ─────────────────── */
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-md) var(--space-lg);
+  background: linear-gradient(180deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-tertiary) 100%
+  );
+  border-bottom: 1px solid var(--color-border);
 }
 
 .title {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
   font-family: var(--font-heading);
-  font-size: 24px;
+  font-size: 18px;
   color: var(--color-gold);
-  margin-bottom: 24px;
   letter-spacing: 0.1em;
+  margin: 0;
 }
 
-.sections {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
-  margin-bottom: 32px;
+.titleIcon {
+  font-size: 20px;
 }
 
-.section {
+.closeBtn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.closeBtn:hover {
+  border-color: var(--color-danger);
+  color: var(--color-danger);
+  background: rgba(139, 69, 69, 0.1);
+}
+
+/* ─────────────────── Tabs ─────────────────── */
+
+.tabs {
+  display: flex;
+  background: var(--color-bg-tertiary);
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 2px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.tab::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--color-gold);
+  transform: scaleX(0);
+  transition: transform var(--transition-fast);
+}
+
+.tab:hover {
+  color: var(--color-text-secondary);
+  background: rgba(201, 162, 39, 0.05);
+}
+
+.tab:hover .tabIcon {
+  transform: scale(1.1);
+}
+
+.tabActive {
+  color: var(--color-gold);
+  background: rgba(201, 162, 39, 0.08);
+}
+
+.tabActive::after {
+  transform: scaleX(1);
+}
+
+.tabActive .tabIcon {
+  transform: scale(1.1);
+}
+
+.tabIcon {
+  font-size: 16px;
+  transition: transform var(--transition-fast);
+}
+
+.tabLabel {
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* ─────────────────── Content ─────────────────── */
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-md) var(--space-lg);
+}
+
+.tabContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  animation: tabFadeIn 0.2s ease-out;
+}
+
+@keyframes tabFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────── Fields ─────────────────── */
+
+.field {
   background: var(--color-bg-tertiary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 16px;
-}
-
-.sectionTitle {
-  font-family: var(--font-heading);
-  font-size: 14px;
-  color: var(--color-text-primary);
-  margin-bottom: 16px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid var(--color-border);
-  letter-spacing: 0.05em;
-}
-
-.field {
-  margin-bottom: 12px;
+  padding: var(--space-sm) var(--space-md);
 }
 
 .field label {
   display: block;
   font-size: 13px;
   color: var(--color-text-secondary);
-  margin-bottom: 6px;
+}
+
+.fieldHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-xs);
+}
+
+.fieldHeader label {
+  margin-bottom: 0;
+}
+
+/* ─────────────────── Range Toggle Button ─────────────────── */
+
+.rangeToggle,
+.autoToggle {
+  padding: 2px 8px;
+  font-size: 11px;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.rangeToggle:hover,
+.autoToggle:hover {
+  border-color: var(--color-gold-dim);
+  color: var(--color-text-secondary);
+}
+
+.rangeToggleActive,
+.autoToggleActive {
+  background: rgba(201, 162, 39, 0.15);
+  border-color: var(--color-gold-dim);
+  color: var(--color-gold);
+}
+
+/* ─────────────────── Range Inputs ─────────────────── */
+
+.rangeInputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.rangeBound {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.boundLabel {
+  font-size: 11px;
+  color: var(--color-text-muted);
+  min-width: 20px;
+}
+
+.boundValue {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  color: var(--color-text-primary);
+  min-width: 24px;
+  text-align: right;
+}
+
+.rangeBound input[type="range"] {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-bg-primary);
+  appearance: none;
+  cursor: pointer;
+}
+
+.rangeBound input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  transition: transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.rangeBound input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.rangeBound input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--color-gold);
+  cursor: pointer;
+  border: none;
+}
+
+/* ─────────────────── Auto Hint ─────────────────── */
+
+.autoHint {
+  font-size: 11px;
+  font-style: italic;
+  color: var(--color-text-muted);
+  padding: var(--space-xs) 0;
 }
 
 .inputGroup {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--space-md);
 }
 
 .inputGroup input[type="range"] {
@@ -96,10 +336,11 @@
   background: var(--color-gold);
   cursor: pointer;
   transition: transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .inputGroup input[type="range"]::-webkit-slider-thumb:hover {
-  transform: scale(1.1);
+  transform: scale(1.15);
 }
 
 .inputGroup input[type="range"]::-moz-range-thumb {
@@ -112,24 +353,34 @@
 }
 
 .value {
-  min-width: 60px;
+  min-width: 70px;
   text-align: right;
   font-family: var(--font-heading);
   font-size: 14px;
   color: var(--color-text-primary);
 }
 
+/* ─────────────────── Checkbox Field ─────────────────── */
+
 .checkboxField {
-  margin-bottom: 12px;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
 }
 
 .checkboxField label {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-sm);
   font-size: 14px;
   color: var(--color-text-secondary);
   cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.checkboxField label:hover {
+  color: var(--color-text-primary);
 }
 
 .checkboxField input[type="checkbox"] {
@@ -138,6 +389,8 @@
   accent-color: var(--color-gold);
   cursor: pointer;
 }
+
+/* ─────────────────── Number Input ─────────────────── */
 
 .numberInput {
   width: 100%;
@@ -148,6 +401,7 @@
   color: var(--color-text-primary);
   font-family: var(--font-body);
   font-size: 14px;
+  transition: border-color var(--transition-fast);
 }
 
 .numberInput:focus {
@@ -159,20 +413,39 @@
   color: var(--color-text-muted);
 }
 
-.buttons {
+/* ─────────────────── Hint ─────────────────── */
+
+.hint {
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(201, 162, 39, 0.05);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+/* ─────────────────── Footer ─────────────────── */
+
+.footer {
   display: flex;
-  gap: 12px;
+  gap: var(--space-md);
   justify-content: flex-end;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--color-bg-tertiary);
+  border-top: 1px solid var(--color-border);
 }
 
 .cancelBtn {
-  padding: 12px 24px;
-  background: var(--color-bg-tertiary);
+  padding: var(--space-sm) var(--space-lg);
+  background: transparent;
   border: 2px solid var(--color-border);
   border-radius: var(--radius-md);
   color: var(--color-text-secondary);
   font-family: var(--font-heading);
   font-size: 14px;
+  cursor: pointer;
   transition: all var(--transition-fast);
 }
 
@@ -182,7 +455,7 @@
 }
 
 .startBtn {
-  padding: 12px 32px;
+  padding: var(--space-sm) var(--space-xl);
   background: var(--color-gold);
   border: none;
   border-radius: var(--radius-md);
@@ -190,30 +463,60 @@
   font-family: var(--font-heading);
   font-size: 14px;
   font-weight: 600;
+  cursor: pointer;
   transition: all var(--transition-fast);
 }
 
 .startBtn:hover {
   background: #e5b95a;
   transform: scale(1.02);
+  box-shadow: var(--glow-gold);
 }
 
-/* Mobile */
+.startBtn:active {
+  transform: scale(0.98);
+}
+
+/* ─────────────────── Responsive ─────────────────── */
+
 @media (max-width: 600px) {
   .modal {
-    padding: 20px;
+    max-height: 95vh;
   }
 
-  .sections {
-    grid-template-columns: 1fr;
+  .header {
+    padding: var(--space-sm) var(--space-md);
   }
 
-  .buttons {
+  .title {
+    font-size: 16px;
+  }
+
+  .tab {
+    min-width: 64px;
+    padding: var(--space-xs);
+  }
+
+  .tabIcon {
+    font-size: 16px;
+  }
+
+  .tabLabel {
+    font-size: 10px;
+  }
+
+  .content {
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .footer {
     flex-direction: column;
+    padding: var(--space-sm) var(--space-md);
   }
 
   .cancelBtn,
   .startBtn {
     width: 100%;
+    text-align: center;
   }
 }
