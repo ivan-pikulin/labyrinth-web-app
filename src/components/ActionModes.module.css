@@ -1,73 +1,465 @@
+/* ═══════════════════════════════════════════════════════════════
+   ACTION MODES — Enchanted Arcane Orbs
+   Mystical action selection interface
+   ═══════════════════════════════════════════════════════════════ */
+
 .container {
   display: flex;
-  gap: 12px;
-  padding: 16px 24px;
-  background: var(--color-bg-secondary);
-  border-top: 1px solid var(--color-border);
+  align-items: center;
   justify-content: center;
+  gap: var(--space-md);
+  padding: var(--space-lg) var(--space-xl);
+  background: linear-gradient(180deg,
+    var(--color-bg-secondary) 0%,
+    var(--color-bg-primary) 100%
+  );
+  border-top: 1px solid var(--color-border);
+  position: relative;
 }
 
-.btn {
+/* Top border accent */
+.container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-gold-dim) 30%,
+    var(--color-gold) 50%,
+    var(--color-gold-dim) 70%,
+    transparent 100%
+  );
+}
+
+/* ─────────────────── Decorative Elements ─────────────────── */
+
+.decorLeft,
+.decorRight {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  opacity: 0.5;
+}
+
+.decorRune {
+  font-size: 14px;
+  color: var(--color-gold-dim);
+  font-family: var(--font-runes);
+}
+
+.decorLine {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg,
+    var(--color-gold-dim) 0%,
+    transparent 100%
+  );
+}
+
+.decorRight .decorLine {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-gold-dim) 100%
+  );
+}
+
+/* ─────────────────── Orbs Container ─────────────────── */
+
+.orbsContainer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-lg);
+}
+
+/* ─────────────────── Individual Orb ─────────────────── */
+
+.orb {
+  position: relative;
+  width: 72px;
+  height: 90px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  animation: fadeInUp 0.5s ease-out backwards;
+}
+
+/* ─────────────────── Orb Ring (outer) ─────────────────── */
+
+.orbRing {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-round);
+  border: 2px solid var(--color-border);
+  background: linear-gradient(180deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-tertiary) 50%,
+    var(--color-bg-secondary) 100%
+  );
+  box-shadow:
+    var(--shadow-md),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all var(--transition-fast);
+}
+
+.orbRing::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  border: 1px solid var(--color-border);
+  opacity: 0.5;
+}
+
+/* ─────────────────── Orb Inner (content) ─────────────────── */
+
+.orbInner {
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-round);
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  min-width: var(--size-btn-action);
-  height: var(--size-btn-action);
-  padding: 8px 12px;
-  border-radius: var(--radius-md);
-  background: var(--color-bg-tertiary);
-  border: 2px solid var(--color-border);
-  color: var(--color-text-primary);
+  gap: 2px;
+  z-index: 1;
   transition: all var(--transition-fast);
-  position: relative;
 }
 
-.btn:hover:not(:disabled) {
-  background: var(--color-bg-secondary);
-  border-color: var(--color-gold);
+.orbIcon {
+  font-size: 18px;
+  color: var(--color-text-primary);
+  line-height: 1;
+  transition: all var(--transition-fast);
 }
 
-.btn.active {
-  background: var(--color-bg-secondary);
-  border-color: var(--color-gold);
-  box-shadow: var(--shadow-glow-gold);
+.orbRune {
+  font-size: 10px;
+  color: var(--color-gold-dim);
+  font-family: var(--font-runes);
+  opacity: 0.7;
+  transition: all var(--transition-fast);
 }
 
-.btn.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+/* ─────────────────── Orb Glow ─────────────────── */
+
+.orbGlow {
+  position: absolute;
+  top: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-round);
+  background: radial-gradient(circle at center,
+    rgba(201, 162, 39, 0.2) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  pointer-events: none;
 }
 
-.icon {
-  font-size: 20px;
+/* ─────────────────── Active Ring ─────────────────── */
+
+.activeRing {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-round);
+  border: 2px solid var(--color-gold);
+  box-shadow: var(--glow-gold);
+  animation: activeRingPulse 2s ease-in-out infinite;
 }
+
+@keyframes activeRingPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: translateX(-50%) scale(1.05);
+  }
+}
+
+/* ─────────────────── Label ─────────────────── */
 
 .label {
-  font-size: 11px;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
   font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+  transition: all var(--transition-fast);
 }
+
+/* ─────────────────── Count Badge ─────────────────── */
 
 .count {
-  font-size: 12px;
-  color: var(--color-text-secondary);
+  position: absolute;
+  top: -2px;
+  right: 2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  z-index: 2;
 }
 
-.check {
-  position: absolute;
-  top: 2px;
-  right: 4px;
-  font-size: 10px;
-  color: var(--color-gold);
+.count[data-empty="true"] {
+  color: var(--color-fire);
+  border-color: var(--color-fire-dim);
 }
+
+/* ─────────────────── Hotkey ─────────────────── */
 
 .hotkey {
   position: absolute;
-  bottom: 2px;
-  right: 4px;
+  top: 52px;
+  right: 0;
   font-size: 10px;
   color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* ─────────────────── Color Variants ─────────────────── */
+
+/* Gold (default/go) */
+.orb[data-color="gold"] .orbIcon { color: var(--color-gold); }
+.orb[data-color="gold"] .orbGlow {
+  background: radial-gradient(circle at center,
+    rgba(201, 162, 39, 0.3) 0%,
+    transparent 70%
+  );
+}
+
+/* Cold (arrows) */
+.orb[data-color="cold"] .orbIcon { color: var(--color-cold-glow); }
+.orb[data-color="cold"] .orbGlow {
+  background: radial-gradient(circle at center,
+    rgba(90, 155, 175, 0.3) 0%,
+    transparent 70%
+  );
+}
+.orb[data-color="cold"].active .orbRing { border-color: var(--color-cold); }
+.orb[data-color="cold"].active .activeRing {
+  border-color: var(--color-cold);
+  box-shadow: var(--glow-arcane);
+}
+
+/* Fire (bombs) */
+.orb[data-color="fire"] .orbIcon { color: var(--color-fire-glow); }
+.orb[data-color="fire"] .orbGlow {
+  background: radial-gradient(circle at center,
+    rgba(212, 69, 28, 0.3) 0%,
+    transparent 70%
+  );
+}
+.orb[data-color="fire"].active .orbRing { border-color: var(--color-fire); }
+.orb[data-color="fire"].active .activeRing {
+  border-color: var(--color-fire);
+  box-shadow: var(--glow-fire);
+}
+
+/* Arcane (build) */
+.orb[data-color="arcane"] .orbIcon { color: var(--color-arcane-glow); }
+.orb[data-color="arcane"] .orbGlow {
+  background: radial-gradient(circle at center,
+    rgba(107, 74, 140, 0.3) 0%,
+    transparent 70%
+  );
+}
+.orb[data-color="arcane"].active .orbRing { border-color: var(--color-arcane); }
+.orb[data-color="arcane"].active .activeRing {
+  border-color: var(--color-arcane);
+  box-shadow: var(--glow-arcane);
+}
+
+/* ─────────────────── Hover State ─────────────────── */
+
+.orb:hover:not(:disabled) {
+  transform: translateY(-4px);
+}
+
+.orb:hover:not(:disabled) .orbRing {
+  border-color: var(--color-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.orb:hover:not(:disabled) .orbInner {
+  background: var(--color-bg-secondary);
+}
+
+.orb:hover:not(:disabled) .orbIcon {
+  transform: scale(1.1);
+}
+
+.orb:hover:not(:disabled) .orbRune {
+  color: var(--color-gold);
+  opacity: 1;
+}
+
+.orb:hover:not(:disabled) .orbGlow {
+  opacity: 1;
+}
+
+.orb:hover:not(:disabled) .label {
+  color: var(--color-text-primary);
+}
+
+/* ─────────────────── Active State ─────────────────── */
+
+.orb.active {
+  transform: translateY(-2px);
+}
+
+.orb.active .orbRing {
+  border-color: var(--color-gold);
+}
+
+.orb.active .orbInner {
+  background: var(--color-bg-secondary);
+}
+
+.orb.active .orbIcon {
+  transform: scale(1.05);
+}
+
+.orb.active .orbRune {
+  color: var(--color-gold);
+  opacity: 1;
+}
+
+.orb.active .orbGlow {
+  opacity: 0.6;
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+}
+
+.orb.active .label {
+  color: var(--color-gold);
+}
+
+/* ─────────────────── Disabled State ─────────────────── */
+
+.orb.disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+  filter: grayscale(0.6);
+}
+
+.orb.disabled .orbRing,
+.orb.disabled .orbInner {
+  background: var(--color-bg-primary);
+}
+
+/* ─────────────────── Active (press) State ─────────────────── */
+
+.orb:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ─────────────────── Fade In Animation ─────────────────── */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────── Responsive ─────────────────── */
+
+@media (max-width: 600px) {
+  .container {
+    padding: var(--space-md);
+    gap: var(--space-sm);
+  }
+
+  .decorLeft,
+  .decorRight {
+    display: none;
+  }
+
+  .orbsContainer {
+    gap: var(--space-md);
+  }
+
+  .orb {
+    width: 60px;
+    height: 78px;
+  }
+
+  .orbRing {
+    width: 52px;
+    height: 52px;
+  }
+
+  .orbInner {
+    width: 40px;
+    height: 40px;
+  }
+
+  .orbIcon {
+    font-size: 16px;
+  }
+
+  .orbRune {
+    font-size: 9px;
+  }
+
+  .label {
+    font-size: 9px;
+  }
+
+  .activeRing {
+    width: 60px;
+    height: 60px;
+  }
+
+  .orbGlow {
+    width: 68px;
+    height: 68px;
+  }
 }

@@ -1,138 +1,382 @@
+/* ═══════════════════════════════════════════════════════════════
+   SIDE PANELS — Arcane Information Tablets
+   Mystical panels displaying hero and labyrinth information
+   ═══════════════════════════════════════════════════════════════ */
+
 .panel {
-  background: var(--color-bg-secondary);
+  background: linear-gradient(180deg,
+    var(--color-bg-secondary) 0%,
+    var(--color-bg-primary) 100%
+  );
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  padding: 16px;
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  min-width: 200px;
+  gap: var(--space-md);
+  min-width: 220px;
+  position: relative;
+  overflow: hidden;
 }
+
+/* Subtle corner decorations */
+.panel::before,
+.panel::after {
+  content: '◈';
+  position: absolute;
+  font-size: 10px;
+  color: var(--color-gold-dim);
+  opacity: 0.4;
+}
+
+.panel::before {
+  top: 8px;
+  left: 8px;
+}
+
+.panel::after {
+  bottom: 8px;
+  right: 8px;
+}
+
+/* Top border accent */
+.panel > *:first-child::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-gold-dim) 50%,
+    transparent 100%
+  );
+}
+
+/* ─────────────────── Title ─────────────────── */
 
 .title {
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 700;
   color: var(--color-gold);
   text-align: center;
-  letter-spacing: 0.1em;
-  margin-bottom: 4px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding-bottom: var(--space-sm);
+  position: relative;
 }
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 20%;
+  right: 20%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-border-light) 50%,
+    transparent 100%
+  );
+}
+
+/* ─────────────────── Section ─────────────────── */
 
 .section {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: var(--space-sm);
 }
 
 .sectionTitle {
-  font-size: 12px;
+  font-family: var(--font-heading);
+  font-size: 10px;
+  font-weight: 600;
   color: var(--color-text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
 }
+
+.sectionTitle::before,
+.sectionTitle::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+  opacity: 0.5;
+}
+
+/* ─────────────────── Divider ─────────────────── */
 
 .divider {
   height: 1px;
-  background: var(--color-border);
-  margin: 4px 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-border) 20%,
+    var(--color-border) 80%,
+    transparent 100%
+  );
+  margin: var(--space-xs) 0;
 }
+
+/* ─────────────────── Row ─────────────────── */
 
 .row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 14px;
+  gap: var(--space-sm);
+  font-size: 13px;
+  padding: var(--space-xs) 0;
+  transition: all var(--transition-fast);
+}
+
+.row:hover {
+  background: rgba(201, 162, 39, 0.03);
+  border-radius: var(--radius-sm);
+  margin: 0 calc(var(--space-xs) * -1);
+  padding-left: var(--space-xs);
+  padding-right: var(--space-xs);
 }
 
 .icon {
-  font-size: 16px;
-  width: 20px;
+  font-size: 14px;
+  width: 22px;
   text-align: center;
+  opacity: 0.8;
 }
 
 .label {
   flex: 1;
   color: var(--color-text-secondary);
+  font-size: 13px;
 }
 
 .value {
   font-family: var(--font-heading);
+  font-size: 13px;
+  font-weight: 600;
   color: var(--color-text-primary);
+  min-width: 32px;
+  text-align: right;
 }
+
+/* ─────────────────── Health Bar ─────────────────── */
 
 .healthBar {
   display: flex;
-  gap: 3px;
-  margin-top: 4px;
+  gap: 4px;
+  margin-top: var(--space-xs);
 }
 
 .healthSegment {
-  width: 14px;
-  height: 14px;
-  border-radius: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  transition: all var(--transition-fast);
+  position: relative;
 }
 
 .healthSegment.filled {
-  background: var(--color-health);
-  box-shadow: 0 0 4px rgba(139, 77, 77, 0.5);
+  background: linear-gradient(180deg,
+    var(--color-health-glow) 0%,
+    var(--color-health) 100%
+  );
+  box-shadow:
+    0 0 6px rgba(139, 51, 51, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.healthSegment.filled::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: linear-gradient(180deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    transparent 50%
+  );
+  border-radius: 2px;
 }
 
 .healthSegment.empty {
-  background: var(--color-bg-tertiary);
+  background: var(--color-bg-primary);
   border: 1px solid var(--color-border);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
 }
+
+/* ─────────────────── Inventory Grid ─────────────────── */
 
 .inventoryGrid {
   display: flex;
-  gap: 6px;
+  gap: var(--space-sm);
   flex-wrap: wrap;
 }
 
 .inventoryItem {
-  font-size: 20px;
-  padding: 4px 6px;
-  background: var(--color-bg-tertiary);
-  border-radius: var(--radius-sm);
+  font-size: 18px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-tertiary) 100%
+  );
+  border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+  cursor: default;
+}
+
+.inventoryItem:hover {
+  border-color: var(--color-gold-dim);
+  box-shadow: var(--glow-gold);
+  transform: translateY(-2px);
 }
 
 .emptyText {
   color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
   font-style: italic;
-  font-size: 13px;
+  opacity: 0.7;
 }
+
+/* ─────────────────── Gold Section (Victory Item) ─────────────────── */
 
 .goldSection {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  padding: 8px;
-  background: rgba(212, 168, 73, 0.1);
-  border-radius: var(--radius-sm);
-  animation: goldGlow 2s infinite;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background: linear-gradient(180deg,
+    rgba(201, 162, 39, 0.15) 0%,
+    rgba(201, 162, 39, 0.08) 100%
+  );
+  border: 1px solid var(--color-gold-dim);
+  border-radius: var(--radius-md);
+  animation: goldGlow 2.5s ease-in-out infinite;
+  position: relative;
+  overflow: hidden;
+}
+
+.goldSection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(201, 162, 39, 0.1) 50%,
+    transparent 100%
+  );
+  animation: goldShimmer 3s ease-in-out infinite;
+}
+
+@keyframes goldShimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
 .goldIcon {
-  font-size: 24px;
+  font-size: 22px;
+  animation: goldIconFloat 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes goldIconFloat {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-3px) rotate(5deg); }
 }
 
 .goldText {
   font-family: var(--font-heading);
-  font-size: 14px;
+  font-size: 13px;
+  font-weight: 700;
   color: var(--color-gold);
-  letter-spacing: 0.15em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px rgba(201, 162, 39, 0.4);
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes goldGlow {
-  0%, 100% { box-shadow: 0 0 5px rgba(212, 168, 73, 0.2); }
-  50% { box-shadow: 0 0 15px rgba(212, 168, 73, 0.4); }
+  0%, 100% {
+    box-shadow:
+      0 0 10px rgba(201, 162, 39, 0.2),
+      inset 0 0 10px rgba(201, 162, 39, 0.05);
+  }
+  50% {
+    box-shadow:
+      0 0 20px rgba(201, 162, 39, 0.4),
+      0 0 40px rgba(201, 162, 39, 0.1),
+      inset 0 0 15px rgba(201, 162, 39, 0.1);
+  }
 }
+
+/* ─────────────────── Empty State ─────────────────── */
 
 .empty {
   color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: 12px;
   font-style: italic;
-  font-size: 13px;
   text-align: center;
-  padding: 8px;
+  padding: var(--space-sm);
+  opacity: 0.7;
+}
+
+/* ─────────────────── Stat Highlight Effects ─────────────────── */
+
+.row[data-highlight="danger"] .value {
+  color: var(--color-fire);
+}
+
+.row[data-highlight="warning"] .value {
+  color: var(--color-gold);
+}
+
+.row[data-highlight="success"] .value {
+  color: var(--color-success-glow);
+}
+
+/* ─────────────────── Responsive ─────────────────── */
+
+@media (max-width: 1100px) {
+  .panel {
+    min-width: 180px;
+    padding: var(--space-md);
+  }
+
+  .title {
+    font-size: 12px;
+  }
+
+  .row {
+    font-size: 12px;
+  }
+
+  .icon {
+    font-size: 13px;
+    width: 18px;
+  }
+
+  .healthSegment {
+    width: 14px;
+    height: 14px;
+  }
+
+  .inventoryItem {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
 }

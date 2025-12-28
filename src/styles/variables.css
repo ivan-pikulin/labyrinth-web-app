@@ -1,49 +1,128 @@
 :root {
-  /* Основные цвета */
-  --color-bg-primary: #1a1714;
-  --color-bg-secondary: #2d2825;
-  --color-bg-tertiary: #3d3835;
+  /* ═══════════════════════════════════════════════════════════════
+     ЛАБИРИНТ — Dark Slavic Occult Theme
+     Ancient cryptography meets mystical cartography
+     ═══════════════════════════════════════════════════════════════ */
 
-  /* Текст */
-  --color-text-primary: #c9b896;
-  --color-text-secondary: #9a8b72;
-  --color-text-muted: #6a5b4a;
+  /* ─────────────────── Primary Backgrounds ─────────────────── */
+  --color-bg-void: #0a0908;          /* Deep void black */
+  --color-bg-primary: #12110f;       /* Obsidian base */
+  --color-bg-secondary: #1a1815;     /* Aged iron */
+  --color-bg-tertiary: #252219;      /* Weathered bronze */
+  --color-bg-elevated: #2d2a23;      /* Parchment shadow */
 
-  /* Акценты */
-  --color-fire: #e85a2c;
-  --color-gold: #d4a849;
-  --color-cold: #4a7c8c;
-  --color-health: #8b4d4d;
-  --color-gaze: #7c5a8c;
-  --color-success: #4a8c5a;
+  /* ─────────────────── Parchment & Aged Paper ─────────────────── */
+  --color-parchment: #d4c5a9;        /* Aged parchment */
+  --color-parchment-dark: #b8a88c;   /* Weathered scroll */
+  --color-parchment-faded: #8c7f6a;  /* Faded manuscript */
 
-  /* Границы */
-  --color-border: #4a4035;
+  /* ─────────────────── Text Hierarchy ─────────────────── */
+  --color-text-primary: #e8dcc8;     /* Illuminated text */
+  --color-text-secondary: #a89a82;   /* Faded ink */
+  --color-text-muted: #6a5f4f;       /* Ghost text */
+  --color-text-inverse: #12110f;     /* Ink on gold */
+
+  /* ─────────────────── Mystical Accents ─────────────────── */
+  --color-gold: #c9a227;             /* Illuminated gold leaf */
+  --color-gold-bright: #e8c84a;      /* Burning gold */
+  --color-gold-dim: #8b7225;         /* Tarnished gold */
+
+  --color-fire: #d4451c;             /* Dragon flame */
+  --color-fire-glow: #ff6b3d;        /* Ember glow */
+  --color-fire-dim: #8b2e12;         /* Dying ember */
+
+  --color-cold: #3a6b7a;             /* Frost breath */
+  --color-cold-glow: #5a9baf;        /* Ice gleam */
+
+  --color-arcane: #6b4a8c;           /* Arcane energy */
+  --color-arcane-glow: #9a6bc9;      /* Magic pulse */
+
+  --color-health: #8b3333;           /* Blood red */
+  --color-health-glow: #c94444;      /* Fresh blood */
+
+  --color-success: #3d6b3d;          /* Forest moss */
+  --color-success-glow: #5a9a5a;     /* Living green */
+
+  --color-portal: #4a3d6b;           /* Void purple */
+  --color-portal-glow: #7a5daf;      /* Portal shimmer */
+
+  /* ─────────────────── Decorative Elements ─────────────────── */
+  --color-border: #3d372c;           /* Iron binding */
+  --color-border-light: #5a5040;     /* Brass trim */
+  --color-border-gold: var(--color-gold-dim);
   --color-border-active: var(--color-gold);
 
-  /* Тени */
-  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
-  --shadow-glow-gold: 0 0 10px rgba(212, 168, 73, 0.3);
-  --shadow-glow-fire: 0 0 10px rgba(232, 90, 44, 0.3);
+  /* ─────────────────── Gradients ─────────────────── */
+  --gradient-void: radial-gradient(ellipse at center, #1a1815 0%, #0a0908 100%);
+  --gradient-parchment: linear-gradient(180deg, #d4c5a9 0%, #b8a88c 50%, #a89a82 100%);
+  --gradient-gold: linear-gradient(135deg, #8b7225 0%, #c9a227 50%, #e8c84a 100%);
+  --gradient-fire: linear-gradient(180deg, #ff6b3d 0%, #d4451c 50%, #8b2e12 100%);
+  --gradient-rune: linear-gradient(180deg, rgba(201, 162, 39, 0.8) 0%, rgba(139, 114, 37, 0.4) 100%);
 
-  /* Радиусы */
+  /* ─────────────────── Shadows & Glows ─────────────────── */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.7);
+  --shadow-inset: inset 0 2px 8px rgba(0, 0, 0, 0.4);
+
+  --glow-gold: 0 0 20px rgba(201, 162, 39, 0.4);
+  --glow-gold-strong: 0 0 40px rgba(201, 162, 39, 0.6), 0 0 80px rgba(201, 162, 39, 0.3);
+  --glow-fire: 0 0 20px rgba(212, 69, 28, 0.5);
+  --glow-arcane: 0 0 20px rgba(107, 74, 140, 0.5);
+  --glow-text: 0 0 10px currentColor;
+
+  /* ─────────────────── Border Radii ─────────────────── */
   --radius-sm: 4px;
   --radius-md: 8px;
-  --radius-lg: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-round: 50%;
 
-  /* Шрифты */
+  /* ─────────────────── Typography ─────────────────── */
+  --font-display: 'Cinzel Decorative', 'Cinzel', serif;
   --font-heading: 'Cinzel', serif;
-  --font-body: 'Crimson Pro', serif;
-  --font-mono: 'Fira Code', monospace;
+  --font-body: 'EB Garamond', 'Crimson Pro', Georgia, serif;
+  --font-runes: 'Junicode', 'Noto Sans Runic', serif;
+  --font-mono: 'Fira Code', 'JetBrains Mono', monospace;
 
-  /* Размеры */
-  --size-btn: 60px;
-  --size-btn-action: 70px;
+  /* ─────────────────── Sizes & Spacing ─────────────────── */
+  --size-btn: 64px;
+  --size-btn-action: 72px;
+  --size-compass: 220px;
 
-  /* Переходы */
-  --transition-fast: 0.15s ease;
-  --transition-normal: 0.25s ease;
-  --transition-slow: 0.4s ease;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* ─────────────────── Transitions ─────────────────── */
+  --transition-instant: 0.1s ease;
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-dramatic: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ─────────────────── Z-Index Scale ─────────────────── */
+  --z-base: 0;
+  --z-elevated: 10;
+  --z-overlay: 100;
+  --z-modal: 1000;
+  --z-tooltip: 2000;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   Runic & Decorative Character Sets
+   ═══════════════════════════════════════════════════════════════ */
+
+/*
+   Available Runes (Elder Futhark):
+   ᚠ ᚢ ᚦ ᚨ ᚱ ᚲ ᚷ ᚹ ᚺ ᚾ ᛁ ᛃ ᛇ ᛈ ᛉ ᛊ ᛏ ᛒ ᛖ ᛗ ᛚ ᛜ ᛞ ᛟ
+
+   Decorative Symbols:
+   ◈ ◇ ◆ ⬥ ⬦ ✧ ✦ ★ ☆ ⊛ ⊕ ⊗ ⊙ ◎ ● ○
+   ═ ─ │ ┃ ╔ ╗ ╚ ╝ ╠ ╣ ╦ ╩ ╬
+   ↑ ↓ ← → ↖ ↗ ↘ ↙ ⇑ ⇓ ⇐ ⇒
+   † ‡ ※ ⁂ ⁕ ⁜ ✠ ✡ ✢ ✣ ✤ ✥
+*/

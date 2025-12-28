@@ -1,52 +1,335 @@
+/* ═══════════════════════════════════════════════════════════════
+   GAME SCREEN — Main Labyrinth Interface
+   The mystical viewport into the ancient maze
+   ═══════════════════════════════════════════════════════════════ */
+
 .container {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ─────────────────── Background Layers ─────────────────── */
+
+/* Deep void base */
+.bgVoid {
+  position: absolute;
+  inset: 0;
+  background: var(--gradient-void);
+  z-index: 0;
+}
+
+/* Subtle texture overlay */
+.bgTexture {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.4;
+  background:
+    /* Subtle grid pattern */
+    linear-gradient(rgba(201, 162, 39, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201, 162, 39, 0.02) 1px, transparent 1px),
+    /* Noise texture */
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 50px 50px, 50px 50px, 256px 256px;
+  pointer-events: none;
+}
+
+/* Dramatic vignette */
+.bgVignette {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    transparent 0%,
+    transparent 40%,
+    rgba(10, 9, 8, 0.3) 70%,
+    rgba(10, 9, 8, 0.7) 90%,
+    rgba(10, 9, 8, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+/* ─────────────────── Content Layer ─────────────────── */
+
+.content {
+  position: relative;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   height: 100%;
-  background: var(--color-bg-primary);
+  width: 100%;
 }
+
+/* ─────────────────── Main Layout ─────────────────── */
 
 .main {
   display: flex;
   flex: 1;
-  gap: 16px;
-  padding: 16px;
+  gap: var(--space-lg);
+  padding: var(--space-lg);
   overflow: hidden;
+  min-height: 0;
 }
+
+/* ─────────────────── Sidebars ─────────────────── */
 
 .sidebar {
   flex-shrink: 0;
   overflow-y: auto;
+  animation: sidebarSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
 }
+
+.sidebar[data-position="left"] {
+  animation-delay: 0.1s;
+}
+
+.sidebar[data-position="right"] {
+  animation-delay: 0.2s;
+}
+
+@keyframes sidebarSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sidebar[data-position="right"] {
+  animation-name: sidebarSlideInRight;
+}
+
+@keyframes sidebarSlideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ─────────────────── Center Area ─────────────────── */
 
 .center {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
-  max-width: 600px;
+  max-width: 620px;
   margin: 0 auto;
+  animation: centerFadeIn 0.5s ease-out backwards;
+  animation-delay: 0.15s;
 }
+
+@keyframes centerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ─────────────────── Controls Panel ─────────────────── */
 
 .controls {
   display: flex;
   flex-direction: column;
-  background: var(--color-bg-secondary);
+  background: linear-gradient(180deg,
+    var(--color-bg-secondary) 0%,
+    var(--color-bg-primary) 100%
+  );
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  margin-top: 16px;
+  border-radius: var(--radius-lg);
+  margin-top: var(--space-md);
+  overflow: hidden;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  animation: controlsSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: 0.3s;
 }
 
-/* Mobile: скрываем боковые панели */
+@keyframes controlsSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Decorative top edge */
+.controls::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-gold-dim) 30%,
+    var(--color-gold) 50%,
+    var(--color-gold-dim) 70%,
+    transparent 100%
+  );
+  z-index: 1;
+}
+
+/* Corner accents */
+.controls::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.02),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+}
+
+/* ─────────────────── Corner Runes ─────────────────── */
+
+.cornerRune {
+  position: absolute;
+  font-size: 16px;
+  color: var(--color-gold-dim);
+  font-family: var(--font-runes);
+  opacity: 0.3;
+  z-index: 5;
+  transition: all var(--transition-slow);
+  pointer-events: none;
+}
+
+.cornerRune[data-corner="tl"] {
+  top: var(--space-md);
+  left: var(--space-md);
+}
+
+.cornerRune[data-corner="tr"] {
+  top: var(--space-md);
+  right: var(--space-md);
+}
+
+.cornerRune[data-corner="bl"] {
+  bottom: var(--space-md);
+  left: var(--space-md);
+}
+
+.cornerRune[data-corner="br"] {
+  bottom: var(--space-md);
+  right: var(--space-md);
+}
+
+.container:hover .cornerRune {
+  opacity: 0.6;
+  color: var(--color-gold);
+}
+
+/* ─────────────────── Responsive ─────────────────── */
+
+/* Tablets */
+@media (max-width: 1100px) {
+  .main {
+    gap: var(--space-md);
+    padding: var(--space-md);
+  }
+}
+
+/* Mobile: hide sidebars */
 @media (max-width: 900px) {
   .sidebar {
     display: none;
   }
 
   .main {
-    padding: 8px;
+    padding: var(--space-sm);
   }
 
   .center {
     max-width: none;
+  }
+
+  .cornerRune {
+    font-size: 12px;
+    opacity: 0.2;
+  }
+
+  .cornerRune[data-corner="tl"],
+  .cornerRune[data-corner="tr"],
+  .cornerRune[data-corner="bl"],
+  .cornerRune[data-corner="br"] {
+    top: auto;
+    bottom: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .cornerRune[data-corner="tl"],
+  .cornerRune[data-corner="tr"] {
+    display: none;
+  }
+
+  .cornerRune[data-corner="bl"] {
+    bottom: var(--space-sm);
+    left: var(--space-sm);
+  }
+
+  .cornerRune[data-corner="br"] {
+    bottom: var(--space-sm);
+    right: var(--space-sm);
+  }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+  .main {
+    padding: var(--space-xs);
+  }
+
+  .controls {
+    margin-top: var(--space-sm);
+    border-radius: var(--radius-md);
+  }
+
+  .cornerRune {
+    display: none;
+  }
+}
+
+/* ─────────────────── Dark Mode Enhancements ─────────────────── */
+
+@media (prefers-color-scheme: dark) {
+  .bgVignette {
+    background: radial-gradient(
+      ellipse 80% 60% at 50% 40%,
+      transparent 0%,
+      transparent 35%,
+      rgba(10, 9, 8, 0.4) 65%,
+      rgba(10, 9, 8, 0.8) 85%,
+      rgba(10, 9, 8, 0.95) 100%
+    );
+  }
+}
+
+/* ─────────────────── Reduced Motion ─────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .sidebar,
+  .center,
+  .controls {
+    animation: none;
   }
 }

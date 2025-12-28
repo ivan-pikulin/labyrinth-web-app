@@ -1,23 +1,204 @@
-.container {
+/* ═══════════════════════════════════════════════════════════════
+   EVENT LOG — Ancient Scroll Chronicle
+   A mystical parchment recording the hero's journey
+   ═══════════════════════════════════════════════════════════════ */
+
+.scroll {
   flex: 1;
-  overflow-y: auto;
-  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  min-height: 0;
+  position: relative;
 }
+
+/* ─────────────────── Scroll Top Decoration ─────────────────── */
+
+.scrollTop {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: linear-gradient(180deg,
+    var(--color-bg-tertiary) 0%,
+    var(--color-bg-secondary) 100%
+  );
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.scrollEdge {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-border-light) 50%,
+    transparent 100%
+  );
+}
+
+.scrollHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.scrollTitle {
+  font-family: var(--font-heading);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.scrollRune {
+  font-size: 12px;
+  color: var(--color-gold-dim);
+  font-family: var(--font-runes);
+  opacity: 0.7;
+}
+
+/* ─────────────────── Scroll Body ─────────────────── */
+
+.scrollBody {
+  flex: 1;
+  position: relative;
+  min-height: 0;
+  background: var(--color-bg-secondary);
+  border-left: 1px solid var(--color-border);
+  border-right: 1px solid var(--color-border);
+}
+
+/* Parchment texture */
+.scrollBody::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg,
+      rgba(0, 0, 0, 0.1) 0%,
+      transparent 5%,
+      transparent 95%,
+      rgba(0, 0, 0, 0.1) 100%
+    ),
+    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+/* Left margin line (like old manuscripts) */
+.scrollBody::after {
+  content: '';
+  position: absolute;
+  left: 28px;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    var(--color-border) 10%,
+    var(--color-border) 90%,
+    transparent 100%
+  );
+  opacity: 0.3;
+}
+
+.scrollContent {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--space-md) var(--space-lg);
+  padding-left: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Fade at top */
+.fadeTop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  background: linear-gradient(180deg,
+    var(--color-bg-secondary) 0%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* ─────────────────── Scroll Bottom ─────────────────── */
+
+.scrollBottom {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-md);
+  background: linear-gradient(180deg,
+    var(--color-bg-secondary) 0%,
+    var(--color-bg-tertiary) 100%
+  );
+  border-top: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+
+.scrollCorner {
+  font-size: 10px;
+  color: var(--color-gold-dim);
+  opacity: 0.5;
+}
+
+/* ─────────────────── Empty State ─────────────────── */
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-xxl);
+  color: var(--color-text-muted);
+}
+
+.emptyIcon {
+  font-size: 24px;
+  color: var(--color-gold-dim);
+  opacity: 0.5;
+  animation: emptyPulse 3s ease-in-out infinite;
+}
+
+@keyframes emptyPulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.1); }
+}
+
+.emptyText {
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* ─────────────────── Message Base ─────────────────── */
 
 .message {
-  padding: 8px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  padding-left: 0;
   border-radius: var(--radius-sm);
-  animation: fadeIn 0.3s ease-out;
-  line-height: 1.5;
+  animation: messageAppear 0.4s ease-out backwards;
+  line-height: 1.55;
+  position: relative;
 }
 
-@keyframes fadeIn {
+@keyframes messageAppear {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(8px);
   }
   to {
     opacity: 1;
@@ -25,83 +206,290 @@
   }
 }
 
-/* Narrative - default beige */
+.messageIcon {
+  flex-shrink: 0;
+  width: 16px;
+  font-size: 12px;
+  text-align: center;
+  opacity: 0.7;
+}
+
+.messageText {
+  flex: 1;
+  font-family: var(--font-body);
+  font-size: 14px;
+}
+
+/* ─────────────────── Message Types ─────────────────── */
+
+/* Narrative (default) */
 .narrative {
   color: var(--color-text-primary);
 }
 
-/* Info - muted */
+.narrative .messageIcon {
+  color: var(--color-text-muted);
+}
+
+/* Info */
 .info {
   color: var(--color-text-secondary);
-  font-size: 14px;
 }
 
-/* Heat - dragon nearby */
+.info .messageText {
+  font-size: 13px;
+}
+
+.info .messageIcon {
+  color: var(--color-gold-dim);
+}
+
+/* Heat - Dragon nearby */
 .heat {
   color: var(--color-fire);
-  border-left: 3px solid var(--color-fire);
-  background: rgba(232, 90, 44, 0.1);
+  background: linear-gradient(90deg,
+    rgba(212, 69, 28, 0.1) 0%,
+    transparent 100%
+  );
+  padding-left: var(--space-sm);
+  border-left: 2px solid var(--color-fire);
 }
 
-/* Draft - cold/pit nearby */
+.heat .messageIcon {
+  color: var(--color-fire);
+  animation: fireFlicker 0.5s ease-in-out infinite;
+}
+
+@keyframes fireFlicker {
+  0%, 100% { opacity: 0.8; }
+  50% { opacity: 1; }
+}
+
+/* Draft - Cold/Portal nearby */
 .draft {
-  color: var(--color-cold);
-  border-left: 3px solid var(--color-cold);
-  background: rgba(74, 124, 140, 0.1);
+  color: var(--color-cold-glow);
+  background: linear-gradient(90deg,
+    rgba(58, 107, 122, 0.1) 0%,
+    transparent 100%
+  );
+  padding-left: var(--space-sm);
+  border-left: 2px solid var(--color-cold);
 }
 
-/* Gaze - archer nearby */
+.draft .messageIcon {
+  color: var(--color-cold-glow);
+}
+
+/* Gaze - Archer watching */
 .gaze {
-  color: var(--color-gaze);
-  border-left: 3px solid var(--color-gaze);
-  background: rgba(124, 90, 140, 0.1);
+  color: var(--color-arcane-glow);
+  background: linear-gradient(90deg,
+    rgba(107, 74, 140, 0.1) 0%,
+    transparent 100%
+  );
+  padding-left: var(--space-sm);
+  border-left: 2px solid var(--color-arcane);
 }
 
-/* Success - hit, pickup */
+.gaze .messageIcon {
+  color: var(--color-arcane-glow);
+}
+
+/* Success - Achievements, pickups */
 .success {
   color: var(--color-gold);
-  border-left: 3px solid var(--color-gold);
-  background: rgba(212, 168, 73, 0.1);
+  background: linear-gradient(90deg,
+    rgba(201, 162, 39, 0.08) 0%,
+    transparent 100%
+  );
+  padding-left: var(--space-sm);
+  border-left: 2px solid var(--color-gold);
 }
 
-/* Damage - taking damage */
-.damage {
-  color: var(--color-health);
-  border-left: 3px solid var(--color-health);
-  background: rgba(139, 77, 77, 0.15);
+.success .messageIcon {
+  color: var(--color-gold);
+}
+
+.success .messageText {
   font-weight: 500;
+}
+
+/* Damage */
+.damage {
+  color: var(--color-health-glow);
+  background: linear-gradient(90deg,
+    rgba(139, 51, 51, 0.15) 0%,
+    transparent 100%
+  );
+  padding-left: var(--space-sm);
+  border-left: 2px solid var(--color-health);
+  animation: messageAppear 0.4s ease-out backwards, damageShake 0.3s ease-out;
+}
+
+@keyframes damageShake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px); }
+  40% { transform: translateX(3px); }
+  60% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+}
+
+.damage .messageIcon {
+  color: var(--color-health-glow);
+}
+
+.damage .messageText {
+  font-weight: 600;
 }
 
 /* Death */
 .death {
-  color: #fff;
-  background: rgba(139, 77, 77, 0.3);
+  color: var(--color-parchment);
+  background: linear-gradient(180deg,
+    rgba(139, 51, 51, 0.25) 0%,
+    rgba(139, 51, 51, 0.15) 100%
+  );
   border: 1px solid var(--color-health);
-  text-align: center;
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+  margin: var(--space-sm) 0;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+  animation: deathAppear 0.6s ease-out backwards, bloodPulse 2s ease-in-out infinite;
+}
+
+@keyframes deathAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bloodPulse {
+  0%, 100% { box-shadow: inset 0 0 20px rgba(139, 51, 51, 0.2); }
+  50% { box-shadow: inset 0 0 40px rgba(139, 51, 51, 0.4); }
+}
+
+.death .messageIcon {
+  font-size: 24px;
+  color: var(--color-health-glow);
+  opacity: 1;
+}
+
+.death .messageText {
   font-family: var(--font-heading);
-  font-size: 18px;
-  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 /* Victory */
 .victory {
-  color: var(--color-gold);
-  background: rgba(212, 168, 73, 0.2);
-  border: 1px solid var(--color-gold);
-  text-align: center;
+  color: var(--color-gold-bright);
+  background: linear-gradient(180deg,
+    rgba(201, 162, 39, 0.2) 0%,
+    rgba(201, 162, 39, 0.1) 100%
+  );
+  border: 2px solid var(--color-gold);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  margin: var(--space-sm) 0;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: victoryAppear 0.8s ease-out backwards, victoryGlow 2s ease-in-out infinite;
+}
+
+@keyframes victoryAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8) rotate(-2deg);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes victoryGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(201, 162, 39, 0.3),
+      inset 0 0 20px rgba(201, 162, 39, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 0 40px rgba(201, 162, 39, 0.5),
+      0 0 80px rgba(232, 200, 74, 0.2),
+      inset 0 0 30px rgba(201, 162, 39, 0.2);
+  }
+}
+
+.victory .messageIcon {
+  font-size: 32px;
+  color: var(--color-gold-bright);
+  opacity: 1;
+  animation: crownFloat 2s ease-in-out infinite;
+}
+
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0) rotate(-5deg); }
+  50% { transform: translateY(-5px) rotate(5deg); }
+}
+
+.victory .messageText {
   font-family: var(--font-heading);
   font-size: 18px;
-  padding: 16px;
-  animation: glowPulse 2s infinite;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(201, 162, 39, 0.5);
 }
 
 /* Error */
 .error {
   color: var(--color-fire);
-  font-size: 14px;
+  opacity: 0.9;
 }
 
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 5px rgba(212, 168, 73, 0.3); }
-  50% { box-shadow: 0 0 15px rgba(212, 168, 73, 0.5); }
+.error .messageText {
+  font-size: 13px;
+}
+
+.error .messageIcon {
+  color: var(--color-fire);
+}
+
+/* ─────────────────── Responsive ─────────────────── */
+
+@media (max-width: 600px) {
+  .scrollContent {
+    padding: var(--space-sm) var(--space-md);
+    padding-left: 32px;
+  }
+
+  .scrollBody::after {
+    left: 20px;
+  }
+
+  .messageText {
+    font-size: 13px;
+  }
+
+  .death .messageText,
+  .victory .messageText {
+    font-size: 14px;
+  }
+
+  .victory .messageIcon {
+    font-size: 24px;
+  }
 }
