@@ -17,6 +17,7 @@ const LOG_ICONS: Record<string, string> = {
 
 export function EventLog() {
   const logs = useGameStore((s) => s.logs);
+  const turn = useGameStore((s) => s.turn);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -41,39 +42,59 @@ export function EventLog() {
   };
 
   return (
-    <div className={styles.scroll}>
-      {/* Scroll top decoration */}
-      <div className={styles.scrollTop} aria-hidden="true">
-        <span className={styles.scrollEdge} />
-        <div className={styles.scrollHeader}>
-          <span className={styles.scrollRune}>ᛗ</span>
-          <span className={styles.scrollTitle}>Хроники</span>
-          <span className={styles.scrollRune}>ᛗ</span>
+    <div className={styles.chat}>
+      {/* Chat header */}
+      <div className={styles.chatHeader}>
+        <span className={styles.headerLine} />
+        <div className={styles.headerContent}>
+          <span className={styles.headerRune}>ᛗ</span>
+          <span className={styles.headerTitle}>
+            Хроники
+            <span className={styles.headerDay}>— день {turn + 1}</span>
+          </span>
+          <span className={styles.headerRune}>ᛗ</span>
         </div>
-        <span className={styles.scrollEdge} />
+        <span className={styles.headerLine} />
       </div>
 
-      {/* Scroll content */}
-      <div className={styles.scrollBody}>
-        <div className={styles.scrollContent} ref={containerRef}>
+      {/* Chat messages */}
+      <div className={styles.chatBody}>
+        <div className={styles.chatMessages} ref={containerRef}>
           {logs.length === 0 ? (
             <div className={styles.empty}>
               <span className={styles.emptyIcon}>◈</span>
               <span className={styles.emptyText}>Странствие начинается...</span>
             </div>
           ) : (
-            logs.map((log, index) => (
-              <div
-                key={log.id}
-                className={`${styles.message} ${getLogClass(log.type)}`}
-                style={{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }}
-              >
-                <span className={styles.messageIcon}>
-                  {LOG_ICONS[log.type] || LOG_ICONS.narrative}
-                </span>
-                <span className={styles.messageText}>{log.text}</span>
-              </div>
-            ))
+            logs.map((log, index) => {
+              const isPlayer = log.sender === 'player';
+              const isSpecial = log.type === 'death' || log.type === 'victory';
+
+              return (
+                <div
+                  key={log.id}
+                  className={`
+                    ${styles.message}
+                    ${getLogClass(log.type)}
+                    ${isPlayer ? styles.playerMessage : styles.gameMessage}
+                    ${isSpecial ? styles.specialMessage : ''}
+                  `}
+                  style={{ animationDelay: `${Math.min(index * 0.02, 0.3)}s` }}
+                >
+                  {!isPlayer && !isSpecial && (
+                    <span className={styles.messageIcon}>
+                      {LOG_ICONS[log.type] || LOG_ICONS.narrative}
+                    </span>
+                  )}
+                  {isSpecial && (
+                    <span className={styles.messageIcon}>
+                      {LOG_ICONS[log.type]}
+                    </span>
+                  )}
+                  <span className={styles.messageText}>{log.text}</span>
+                </div>
+              );
+            })
           )}
         </div>
 
@@ -81,11 +102,11 @@ export function EventLog() {
         <div className={styles.fadeTop} aria-hidden="true" />
       </div>
 
-      {/* Scroll bottom decoration */}
-      <div className={styles.scrollBottom} aria-hidden="true">
-        <span className={styles.scrollEdge} />
-        <span className={styles.scrollCorner}>◈</span>
-        <span className={styles.scrollEdge} />
+      {/* Chat footer */}
+      <div className={styles.chatFooter} aria-hidden="true">
+        <span className={styles.headerLine} />
+        <span className={styles.footerCorner}>◈</span>
+        <span className={styles.headerLine} />
       </div>
     </div>
   );

@@ -1,0 +1,251 @@
+/* ═══════════════════════════════════════════════════════════════
+   BURGER MENU — Mystical Side Navigation
+   A dark sliding menu for game controls
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ─────────────────── Burger Button ─────────────────── */
+
+.burgerBtn {
+  position: fixed;
+  top: var(--space-md);
+  left: var(--space-md);
+  z-index: 50;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: linear-gradient(180deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-tertiary) 100%
+  );
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.burgerBtn:hover {
+  border-color: var(--color-gold-dim);
+  background: var(--color-bg-secondary);
+}
+
+.burgerBtn:hover .burgerLine {
+  background: var(--color-gold);
+}
+
+.burgerBtn:active {
+  transform: scale(0.95);
+}
+
+.burgerLine {
+  width: 20px;
+  height: 2px;
+  background: var(--color-text-secondary);
+  border-radius: 1px;
+  transition: all var(--transition-fast);
+}
+
+/* ─────────────────── Overlay ─────────────────── */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 9, 8, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  animation: overlayFadeIn 0.2s ease-out;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ─────────────────── Menu Panel ─────────────────── */
+
+.menu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 280px;
+  max-width: 85vw;
+  background: linear-gradient(180deg,
+    var(--color-bg-secondary) 0%,
+    var(--color-bg-primary) 100%
+  );
+  border-right: 2px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  animation: menuSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes menuSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Top border accent */
+.menu::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    var(--color-gold) 0%,
+    var(--color-gold-dim) 50%,
+    transparent 100%
+  );
+}
+
+/* ─────────────────── Menu Header ─────────────────── */
+
+.menuHeader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+  padding: var(--space-lg) var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.menuTitle {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+}
+
+.menuRune {
+  font-size: 14px;
+  color: var(--color-gold-dim);
+  font-family: var(--font-runes);
+  opacity: 0.7;
+}
+
+/* ─────────────────── Menu Items ─────────────────── */
+
+.menuItems {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-md);
+}
+
+.menuItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  text-align: left;
+}
+
+.menuItem:hover {
+  background: linear-gradient(90deg,
+    rgba(201, 162, 39, 0.1) 0%,
+    transparent 100%
+  );
+  border-color: var(--color-border);
+}
+
+.menuItem:active {
+  transform: translateX(4px);
+}
+
+.menuItemIcon {
+  font-size: 18px;
+  width: 28px;
+  text-align: center;
+  color: var(--color-gold-dim);
+  transition: all var(--transition-fast);
+}
+
+.menuItem:hover .menuItemIcon {
+  color: var(--color-gold);
+}
+
+.menuItemText {
+  font-family: var(--font-heading);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  letter-spacing: 0.05em;
+}
+
+/* ─────────────────── Menu Footer ─────────────────── */
+
+.menuFooter {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.footerLine {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--color-border-light) 50%,
+    transparent 100%
+  );
+}
+
+.footerRune {
+  font-size: 10px;
+  color: var(--color-gold-dim);
+  opacity: 0.5;
+}
+
+/* ─────────────────── Responsive ─────────────────── */
+
+@media (max-width: 480px) {
+  .burgerBtn {
+    width: 40px;
+    height: 40px;
+    top: var(--space-sm);
+    left: var(--space-sm);
+  }
+
+  .burgerLine {
+    width: 18px;
+  }
+
+  .menu {
+    width: 260px;
+  }
+
+  .menuItem {
+    padding: var(--space-sm) var(--space-md);
+  }
+}
+
+/* ─────────────────── Reduced Motion ─────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay,
+  .menu {
+    animation: none;
+  }
+}

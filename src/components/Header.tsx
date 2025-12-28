@@ -1,19 +1,24 @@
-import { useGameStore } from '@/store/gameStore';
 import styles from './Header.module.css';
 
 interface Props {
-  onOpenSettings: () => void;
+  onMenuOpen?: () => void;
 }
 
-export function Header({ onOpenSettings }: Props) {
-  const turn = useGameStore((s) => s.turn);
-  const player = useGameStore((s) => s.player);
-  const labyrinth = useGameStore((s) => s.labyrinth);
-
-  const floorNumeral = ['I', 'II', 'III', 'IV', 'V'][player.position.z] || (player.position.z + 1);
-
+export function Header({ onMenuOpen }: Props) {
   return (
     <header className={styles.header}>
+      {/* Menu button */}
+      <button
+        className={styles.menuBtn}
+        onClick={onMenuOpen}
+        aria-label="Открыть меню"
+        title="Меню"
+      >
+        <span className={styles.menuLine} />
+        <span className={styles.menuLine} />
+        <span className={styles.menuLine} />
+      </button>
+
       {/* Left decorative runes */}
       <div className={styles.runicDecor} aria-hidden="true">
         <span className={styles.rune}>ᚠ</span>
@@ -43,36 +48,7 @@ export function Header({ onOpenSettings }: Props) {
         </div>
       </div>
 
-      {/* Right info panel */}
-      <div className={styles.infoPanel}>
-        <div className={styles.statGroup}>
-          <div className={styles.stat}>
-            <span className={styles.statIcon}>⟐</span>
-            <span className={styles.statLabel}>Ход</span>
-            <span className={styles.statValue}>{turn}</span>
-          </div>
-
-          {labyrinth.floors > 1 && (
-            <div className={styles.stat}>
-              <span className={styles.statIcon}>⊛</span>
-              <span className={styles.statLabel}>Этаж</span>
-              <span className={styles.statValue}>{floorNumeral}</span>
-            </div>
-          )}
-        </div>
-
-        <button
-          className={styles.settingsBtn}
-          onClick={onOpenSettings}
-          title="Настройки / Новая игра"
-          aria-label="Открыть настройки"
-        >
-          <span className={styles.settingsIcon}>⚙</span>
-          <span className={styles.settingsGlow} aria-hidden="true" />
-        </button>
-      </div>
-
-      {/* Right decorative runes */}
+      {/* Right decorative runes (mirror of left) */}
       <div className={styles.runicDecor} aria-hidden="true">
         <span className={styles.rune}>ᚦ</span>
         <span className={styles.runeLine} />

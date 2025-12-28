@@ -9,7 +9,12 @@ const DIRECTION_CONFIG: Record<Direction, { icon: string; rune: string; label: s
   left: { icon: '←', rune: 'ᚹ', label: 'Запад' },
 };
 
-export function DirectionPad() {
+interface Props {
+  onOpenLabyrinthInfo?: () => void;
+  onOpenPlayerInfo?: () => void;
+}
+
+export function DirectionPad({ onOpenLabyrinthInfo, onOpenPlayerInfo }: Props) {
   const performAction = useGameStore((s) => s.performAction);
 
   const handleClick = (dir: Direction) => {
@@ -36,8 +41,20 @@ export function DirectionPad() {
   };
 
   return (
-    <div className={styles.compass}>
-      {/* Outer decorative ring */}
+    <div className={styles.compassWrapper}>
+      {/* Mobile info button - Labyrinth */}
+      <button
+        className={styles.infoBtn}
+        onClick={onOpenLabyrinthInfo}
+        aria-label="Информация о лабиринте"
+        data-position="left"
+      >
+        <span className={styles.infoBtnIcon}>🏛️</span>
+        <span className={styles.infoBtnRune}>ᛚ</span>
+      </button>
+
+      <div className={styles.compass}>
+        {/* Outer decorative ring */}
       <div className={styles.outerRing} aria-hidden="true">
         <span className={styles.cardinal} data-dir="n">N</span>
         <span className={styles.cardinal} data-dir="e">E</span>
@@ -95,11 +112,23 @@ export function DirectionPad() {
         </svg>
       </div>
 
-      {/* Decorative corner runes */}
-      <span className={styles.cornerDecor} data-corner="tl">ᚠ</span>
-      <span className={styles.cornerDecor} data-corner="tr">ᚢ</span>
-      <span className={styles.cornerDecor} data-corner="bl">ᚦ</span>
-      <span className={styles.cornerDecor} data-corner="br">ᚨ</span>
+        {/* Decorative corner runes */}
+        <span className={styles.cornerDecor} data-corner="tl">ᚠ</span>
+        <span className={styles.cornerDecor} data-corner="tr">ᚢ</span>
+        <span className={styles.cornerDecor} data-corner="bl">ᚦ</span>
+        <span className={styles.cornerDecor} data-corner="br">ᚨ</span>
+      </div>
+
+      {/* Mobile info button - Player */}
+      <button
+        className={styles.infoBtn}
+        onClick={onOpenPlayerInfo}
+        aria-label="Информация о герое"
+        data-position="right"
+      >
+        <span className={styles.infoBtnIcon}>⚔️</span>
+        <span className={styles.infoBtnRune}>ᚺ</span>
+      </button>
     </div>
   );
 }

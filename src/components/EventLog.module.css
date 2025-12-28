@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════
-   EVENT LOG — Ancient Scroll Chronicle
-   A mystical parchment recording the hero's journey
+   EVENT LOG — Mystical Chat Chronicle
+   A dark chat interface for the hero's journey
    ═══════════════════════════════════════════════════════════════ */
 
-.scroll {
+.chat {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -11,9 +11,9 @@
   position: relative;
 }
 
-/* ─────────────────── Scroll Top Decoration ─────────────────── */
+/* ─────────────────── Chat Header ─────────────────── */
 
-.scrollTop {
+.chatHeader {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -26,7 +26,7 @@
   flex-shrink: 0;
 }
 
-.scrollEdge {
+.headerLine {
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg,
@@ -36,31 +36,43 @@
   );
 }
 
-.scrollHeader {
+.headerContent {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
 }
 
-.scrollTitle {
+.headerTitle {
   font-family: var(--font-heading);
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
 }
 
-.scrollRune {
+.headerDay {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: var(--color-gold-dim);
+  text-transform: lowercase;
+}
+
+.headerRune {
   font-size: 12px;
   color: var(--color-gold-dim);
   font-family: var(--font-runes);
   opacity: 0.7;
 }
 
-/* ─────────────────── Scroll Body ─────────────────── */
+/* ─────────────────── Chat Body ─────────────────── */
 
-.scrollBody {
+.chatBody {
   flex: 1;
   position: relative;
   min-height: 0;
@@ -69,47 +81,12 @@
   border-right: 1px solid var(--color-border);
 }
 
-/* Parchment texture */
-.scrollBody::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(180deg,
-      rgba(0, 0, 0, 0.1) 0%,
-      transparent 5%,
-      transparent 95%,
-      rgba(0, 0, 0, 0.1) 100%
-    ),
-    url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-  opacity: 0.03;
-  pointer-events: none;
-}
-
-/* Left margin line (like old manuscripts) */
-.scrollBody::after {
-  content: '';
-  position: absolute;
-  left: 28px;
-  top: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(180deg,
-    transparent 0%,
-    var(--color-border) 10%,
-    var(--color-border) 90%,
-    transparent 100%
-  );
-  opacity: 0.3;
-}
-
-.scrollContent {
+.chatMessages {
   position: absolute;
   inset: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: var(--space-md) var(--space-lg);
-  padding-left: 40px;
+  padding: var(--space-md);
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
@@ -130,9 +107,9 @@
   z-index: 1;
 }
 
-/* ─────────────────── Scroll Bottom ─────────────────── */
+/* ─────────────────── Chat Footer ─────────────────── */
 
-.scrollBottom {
+.chatFooter {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -145,7 +122,7 @@
   flex-shrink: 0;
 }
 
-.scrollCorner {
+.footerCorner {
   font-size: 10px;
   color: var(--color-gold-dim);
   opacity: 0.5;
@@ -187,11 +164,11 @@
   display: flex;
   align-items: flex-start;
   gap: var(--space-sm);
-  padding: var(--space-xs) var(--space-sm);
-  padding-left: 0;
-  border-radius: var(--radius-sm);
-  animation: messageAppear 0.4s ease-out backwards;
-  line-height: 1.55;
+  max-width: 85%;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  animation: messageAppear 0.3s ease-out backwards;
+  line-height: 1.5;
   position: relative;
 }
 
@@ -208,22 +185,67 @@
 
 .messageIcon {
   flex-shrink: 0;
-  width: 16px;
-  font-size: 12px;
+  width: 18px;
+  font-size: 13px;
   text-align: center;
-  opacity: 0.7;
+  opacity: 0.8;
 }
 
 .messageText {
   flex: 1;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 13px;
+}
+
+/* ─────────────────── Player Messages (Right) ─────────────────── */
+
+.playerMessage {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+  background: linear-gradient(135deg,
+    rgba(201, 162, 39, 0.15) 0%,
+    rgba(201, 162, 39, 0.08) 100%
+  );
+  border: 1px solid rgba(201, 162, 39, 0.25);
+  color: var(--color-gold);
+  border-radius: var(--radius-md) var(--radius-md) var(--radius-sm) var(--radius-md);
+}
+
+.playerMessage .messageText {
+  text-align: right;
+  font-weight: 500;
+}
+
+.playerMessage .messageIcon {
+  display: none;
+}
+
+/* ─────────────────── Game Messages (Left) ─────────────────── */
+
+.gameMessage {
+  align-self: flex-start;
+  background: linear-gradient(135deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-tertiary) 100%
+  );
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md) var(--radius-md) var(--radius-md) var(--radius-sm);
+}
+
+/* ─────────────────── Special Messages (Center) ─────────────────── */
+
+.specialMessage {
+  align-self: center;
+  max-width: 90%;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 /* ─────────────────── Message Types ─────────────────── */
 
 /* Narrative (default) */
-.narrative {
+.narrative.gameMessage {
   color: var(--color-text-primary);
 }
 
@@ -237,7 +259,7 @@
 }
 
 .info .messageText {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .info .messageIcon {
@@ -246,13 +268,12 @@
 
 /* Heat - Dragon nearby */
 .heat {
-  color: var(--color-fire);
-  background: linear-gradient(90deg,
-    rgba(212, 69, 28, 0.1) 0%,
-    transparent 100%
+  background: linear-gradient(135deg,
+    rgba(212, 69, 28, 0.15) 0%,
+    rgba(212, 69, 28, 0.08) 100%
   );
-  padding-left: var(--space-sm);
-  border-left: 2px solid var(--color-fire);
+  border-color: rgba(212, 69, 28, 0.3);
+  color: var(--color-fire);
 }
 
 .heat .messageIcon {
@@ -267,13 +288,12 @@
 
 /* Draft - Cold/Portal nearby */
 .draft {
-  color: var(--color-cold-glow);
-  background: linear-gradient(90deg,
-    rgba(58, 107, 122, 0.1) 0%,
-    transparent 100%
+  background: linear-gradient(135deg,
+    rgba(58, 107, 122, 0.15) 0%,
+    rgba(58, 107, 122, 0.08) 100%
   );
-  padding-left: var(--space-sm);
-  border-left: 2px solid var(--color-cold);
+  border-color: rgba(58, 107, 122, 0.3);
+  color: var(--color-cold-glow);
 }
 
 .draft .messageIcon {
@@ -282,13 +302,12 @@
 
 /* Gaze - Archer watching */
 .gaze {
-  color: var(--color-arcane-glow);
-  background: linear-gradient(90deg,
-    rgba(107, 74, 140, 0.1) 0%,
-    transparent 100%
+  background: linear-gradient(135deg,
+    rgba(107, 74, 140, 0.15) 0%,
+    rgba(107, 74, 140, 0.08) 100%
   );
-  padding-left: var(--space-sm);
-  border-left: 2px solid var(--color-arcane);
+  border-color: rgba(107, 74, 140, 0.3);
+  color: var(--color-arcane-glow);
 }
 
 .gaze .messageIcon {
@@ -297,13 +316,12 @@
 
 /* Success - Achievements, pickups */
 .success {
-  color: var(--color-gold);
-  background: linear-gradient(90deg,
-    rgba(201, 162, 39, 0.08) 0%,
-    transparent 100%
+  background: linear-gradient(135deg,
+    rgba(201, 162, 39, 0.12) 0%,
+    rgba(201, 162, 39, 0.06) 100%
   );
-  padding-left: var(--space-sm);
-  border-left: 2px solid var(--color-gold);
+  border-color: rgba(201, 162, 39, 0.3);
+  color: var(--color-gold);
 }
 
 .success .messageIcon {
@@ -316,14 +334,13 @@
 
 /* Damage */
 .damage {
-  color: var(--color-health-glow);
-  background: linear-gradient(90deg,
-    rgba(139, 51, 51, 0.15) 0%,
-    transparent 100%
+  background: linear-gradient(135deg,
+    rgba(139, 51, 51, 0.2) 0%,
+    rgba(139, 51, 51, 0.1) 100%
   );
-  padding-left: var(--space-sm);
-  border-left: 2px solid var(--color-health);
-  animation: messageAppear 0.4s ease-out backwards, damageShake 0.3s ease-out;
+  border-color: rgba(139, 51, 51, 0.4);
+  color: var(--color-health-glow);
+  animation: messageAppear 0.3s ease-out backwards, damageShake 0.3s ease-out;
 }
 
 @keyframes damageShake {
@@ -344,17 +361,15 @@
 
 /* Death */
 .death {
-  color: var(--color-parchment);
   background: linear-gradient(180deg,
     rgba(139, 51, 51, 0.25) 0%,
     rgba(139, 51, 51, 0.15) 100%
   );
   border: 1px solid var(--color-health);
   border-radius: var(--radius-md);
-  padding: var(--space-md);
+  padding: var(--space-md) var(--space-lg);
   margin: var(--space-sm) 0;
-  flex-direction: column;
-  align-items: center;
+  color: var(--color-parchment);
   gap: var(--space-xs);
   animation: deathAppear 0.6s ease-out backwards, bloodPulse 2s ease-in-out infinite;
 }
@@ -379,20 +394,19 @@
   font-size: 24px;
   color: var(--color-health-glow);
   opacity: 1;
+  width: auto;
 }
 
 .death .messageText {
   font-family: var(--font-heading);
   font-size: 16px;
   font-weight: 600;
-  text-align: center;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
 
 /* Victory */
 .victory {
-  color: var(--color-gold-bright);
   background: linear-gradient(180deg,
     rgba(201, 162, 39, 0.2) 0%,
     rgba(201, 162, 39, 0.1) 100%
@@ -401,8 +415,7 @@
   border-radius: var(--radius-md);
   padding: var(--space-lg);
   margin: var(--space-sm) 0;
-  flex-direction: column;
-  align-items: center;
+  color: var(--color-gold-bright);
   gap: var(--space-sm);
   animation: victoryAppear 0.8s ease-out backwards, victoryGlow 2s ease-in-out infinite;
 }
@@ -436,6 +449,7 @@
   font-size: 32px;
   color: var(--color-gold-bright);
   opacity: 1;
+  width: auto;
   animation: crownFloat 2s ease-in-out infinite;
 }
 
@@ -448,7 +462,6 @@
   font-family: var(--font-heading);
   font-size: 18px;
   font-weight: 700;
-  text-align: center;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   text-shadow: 0 0 20px rgba(201, 162, 39, 0.5);
@@ -456,12 +469,16 @@
 
 /* Error */
 .error {
+  background: linear-gradient(135deg,
+    rgba(212, 69, 28, 0.1) 0%,
+    rgba(212, 69, 28, 0.05) 100%
+  );
+  border-color: rgba(212, 69, 28, 0.25);
   color: var(--color-fire);
-  opacity: 0.9;
 }
 
 .error .messageText {
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .error .messageIcon {
@@ -471,17 +488,17 @@
 /* ─────────────────── Responsive ─────────────────── */
 
 @media (max-width: 600px) {
-  .scrollContent {
-    padding: var(--space-sm) var(--space-md);
-    padding-left: 32px;
+  .chatMessages {
+    padding: var(--space-sm);
   }
 
-  .scrollBody::after {
-    left: 20px;
+  .message {
+    max-width: 90%;
+    padding: var(--space-xs) var(--space-sm);
   }
 
   .messageText {
-    font-size: 13px;
+    font-size: 12px;
   }
 
   .death .messageText,

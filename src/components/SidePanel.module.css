@@ -64,7 +64,8 @@
   text-align: center;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  padding-bottom: var(--space-sm);
+  padding: var(--space-sm) 0 var(--space-md);
+  margin-top: var(--space-xs);
   position: relative;
 }
 
@@ -72,8 +73,8 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 20%;
-  right: 20%;
+  left: 15%;
+  right: 15%;
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,

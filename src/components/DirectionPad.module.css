@@ -3,6 +3,71 @@
    An ancient navigational instrument for traversing the labyrinth
    ═══════════════════════════════════════════════════════════════ */
 
+/* ─────────────────── Compass Wrapper ─────────────────── */
+
+.compassWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ─────────────────── Info Buttons ─────────────────── */
+
+.infoBtn {
+  display: none;
+  width: 48px;
+  height: 48px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-radius: var(--radius-round);
+  background: linear-gradient(180deg,
+    var(--color-bg-elevated) 0%,
+    var(--color-bg-tertiary) 100%
+  );
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  position: relative;
+}
+
+.infoBtn::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: inherit;
+  border: 1px solid var(--color-border);
+  opacity: 0.4;
+}
+
+.infoBtnIcon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.infoBtnRune {
+  font-size: 10px;
+  color: var(--color-gold-dim);
+  font-family: var(--font-runes);
+  opacity: 0.7;
+  transition: all var(--transition-fast);
+}
+
+.infoBtn:hover {
+  border-color: var(--color-gold);
+  box-shadow: var(--glow-gold);
+}
+
+.infoBtn:hover .infoBtnRune {
+  color: var(--color-gold);
+  opacity: 1;
+}
+
+.infoBtn:active {
+  transform: scale(0.95);
+}
+
 .compass {
   position: relative;
   width: var(--size-compass);
@@ -365,6 +430,32 @@
 
 /* ─────────────────── Responsive ─────────────────── */
 
+@media (max-width: 900px) {
+  .compassWrapper {
+    width: 100%;
+    position: relative;
+  }
+
+  .compass {
+    margin: var(--space-md) auto;
+  }
+
+  .infoBtn {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .infoBtn[data-position="left"] {
+    left: calc((100% - var(--size-compass)) / 4 - 24px);
+  }
+
+  .infoBtn[data-position="right"] {
+    right: calc((100% - var(--size-compass)) / 4 - 24px);
+  }
+}
+
 @media (max-width: 600px) {
   .compass {
     --size-compass: 180px;
@@ -399,5 +490,26 @@
 
   .cornerDecor {
     display: none;
+  }
+
+  .infoBtn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .infoBtn[data-position="left"] {
+    left: calc((100% - var(--size-compass)) / 4 - 21px);
+  }
+
+  .infoBtn[data-position="right"] {
+    right: calc((100% - var(--size-compass)) / 4 - 21px);
+  }
+
+  .infoBtnIcon {
+    font-size: 16px;
+  }
+
+  .infoBtnRune {
+    font-size: 9px;
   }
 }

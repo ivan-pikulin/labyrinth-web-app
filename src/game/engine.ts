@@ -7,18 +7,20 @@ import {
   OPPOSITE_DIRECTION,
   Cell,
   LogMessage,
+  LogSender,
   ItemType,
   positionEquals,
   ActionMode,
 } from '@/types';
 import { generateLabyrinth } from './generator';
 
-function createLogMessage(type: LogMessage['type'], text: string): LogMessage {
+function createLogMessage(type: LogMessage['type'], text: string, sender: LogSender = 'game'): LogMessage {
   return {
     id: Math.random().toString(36).substring(2, 9),
     type,
     text,
     timestamp: Date.now(),
+    sender,
   };
 }
 
@@ -222,7 +224,7 @@ export function move(state: GameState, direction: Direction): GameState {
     actionMode: 'go',
   };
 
-  newState = addLog(newState, 'narrative', `> Идёте ${getDirectionNameTo(direction)}...`);
+  newState = addLog(newState, 'narrative', `Иду ${getDirectionNameTo(direction)}`, 'player');
 
   // Check for exit with gold
   const cell = getCurrentCell(state);
@@ -537,7 +539,7 @@ export function shoot(state: GameState, direction: Direction): GameState {
     actionMode: 'go',
   };
 
-  newState = addLog(newState, 'narrative', `> Стреляете ${getDirectionNameTo(direction)}...`);
+  newState = addLog(newState, 'narrative', `Стреляю ${getDirectionNameTo(direction)}`, 'player');
 
   const hasDoubleGun = newState.player.inventory.some((i) => i.type === 'double_gun');
   const damage = hasDoubleGun
@@ -634,7 +636,7 @@ export function bomb(state: GameState, direction: Direction): GameState {
     actionMode: 'go',
   };
 
-  newState = addLog(newState, 'narrative', `> Бросаете бомбу ${getDirectionNameTo(direction)}...`);
+  newState = addLog(newState, 'narrative', `Бросаю бомбу ${getDirectionNameTo(direction)}`, 'player');
 
   const cell = getCurrentCell(newState);
   const wallType = cell.walls[direction];
@@ -810,10 +812,10 @@ export function setActionMode(state: GameState, mode: ActionMode): GameState {
 }
 
 // Helper to add log
-function addLog(state: GameState, type: LogMessage['type'], text: string): GameState {
+function addLog(state: GameState, type: LogMessage['type'], text: string, sender: LogSender = 'game'): GameState {
   return {
     ...state,
-    logs: [...state.logs, createLogMessage(type, text)],
+    logs: [...state.logs, createLogMessage(type, text, sender)],
   };
 }
 

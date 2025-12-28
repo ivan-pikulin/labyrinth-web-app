@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Header } from './Header';
 import { EventLog } from './EventLog';
 import { DirectionPad } from './DirectionPad';
 import { ActionModes } from './ActionModes';
 import { LabyrinthInfo } from './LabyrinthInfo';
 import { PlayerInfo } from './PlayerInfo';
+import { BurgerMenu } from './BurgerMenu';
 import styles from './GameScreen.module.css';
 
 interface Props {
@@ -11,6 +13,11 @@ interface Props {
 }
 
 export function GameScreen({ onOpenSettings }: Props) {
+  const [mobilePanel, setMobilePanel] = useState<'labyrinth' | 'player' | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const closePanel = () => setMobilePanel(null);
+
   return (
     <div className={styles.container}>
       {/* Atmospheric background layers */}
@@ -18,9 +25,16 @@ export function GameScreen({ onOpenSettings }: Props) {
       <div className={styles.bgTexture} aria-hidden="true" />
       <div className={styles.bgVignette} aria-hidden="true" />
 
+      {/* Burger menu */}
+      <BurgerMenu
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        onNewGame={onOpenSettings}
+      />
+
       {/* Main content */}
       <div className={styles.content}>
-        <Header onOpenSettings={onOpenSettings} />
+        <Header onMenuOpen={() => setIsMenuOpen(true)} />
 
         <main className={styles.main}>
           <aside className={styles.sidebar} data-position="left">
@@ -30,7 +44,10 @@ export function GameScreen({ onOpenSettings }: Props) {
           <div className={styles.center}>
             <EventLog />
             <div className={styles.controls}>
-              <DirectionPad />
+              <DirectionPad
+                onOpenLabyrinthInfo={() => setMobilePanel('labyrinth')}
+                onOpenPlayerInfo={() => setMobilePanel('player')}
+              />
               <ActionModes />
             </div>
           </div>
@@ -40,6 +57,22 @@ export function GameScreen({ onOpenSettings }: Props) {
           </aside>
         </main>
       </div>
+
+      {/* Mobile panel overlay */}
+      {mobilePanel && (
+        <div className={styles.mobileOverlay} onClick={closePanel}>
+          <div
+            className={styles.mobilePanel}
+            onClick={(e) => e.stopPropagation()}
+            data-panel={mobilePanel}
+          >
+            <button className={styles.mobilePanelClose} onClick={closePanel}>
+              <span>✕</span>
+            </button>
+            {mobilePanel === 'labyrinth' ? <LabyrinthInfo /> : <PlayerInfo />}
+          </div>
+        </div>
+      )}
 
       {/* Corner runes */}
       <span className={styles.cornerRune} data-corner="tl" aria-hidden="true">ᚠ</span>

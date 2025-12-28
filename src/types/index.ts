@@ -108,11 +108,14 @@ export type LogMessageType =
   | 'info'
   | 'error';
 
+export type LogSender = 'player' | 'game';
+
 export interface LogMessage {
   id: string;
   type: LogMessageType;
   text: string;
   timestamp: number;
+  sender: LogSender;
 }
 
 // ===== ЭКРАНЫ =====
