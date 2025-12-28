@@ -113,27 +113,15 @@ export function getSensations(state: GameState): LogMessage[] {
 
     for (const m of adjacentMonsters) {
       if (m.type === 'dragon') {
-        const dirName = getDirectionName(dir);
-        messages.push(createLogMessage('heat', `🔥 Чувствуете жар с ${dirName}...`));
+        messages.push(createLogMessage('heat', '🔥 Чувствуете жар...'));
       }
       if (m.type === 'archer') {
-        const dirName = getDirectionName(dir);
-        messages.push(createLogMessage('gaze', `👁️ Чувствуете чей-то взгляд с ${dirName}...`));
+        messages.push(createLogMessage('gaze', '👁️ Чувствуете чей-то взгляд...'));
       }
     }
   }
 
   return messages;
-}
-
-function getDirectionName(dir: Direction): string {
-  const names: Record<Direction, string> = {
-    up: 'севера',
-    down: 'юга',
-    left: 'запада',
-    right: 'востока',
-  };
-  return names[dir];
 }
 
 function getDirectionNameTo(dir: Direction): string {
@@ -208,7 +196,7 @@ export function describeLocation(state: GameState): LogMessage[] {
 export function move(state: GameState, direction: Direction): GameState {
   if (state.ended) return state;
   if (!canMove(state, direction)) {
-    return addLog(state, 'error', '⚠️ Там стена! Идти нельзя.');
+    return addLog(state, 'info', 'Там стена. Идти нельзя.');
   }
 
   const { dx, dy } = DIRECTION_VECTORS[direction];

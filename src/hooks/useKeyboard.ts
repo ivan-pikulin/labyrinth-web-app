@@ -7,23 +7,6 @@ const KEY_TO_DIRECTION: Record<string, Direction> = {
   ArrowDown: 'down',
   ArrowLeft: 'left',
   ArrowRight: 'right',
-  w: 'up',
-  W: 'up',
-  s: 'down',
-  S: 'down',
-  a: 'left',
-  A: 'left',
-  d: 'right',
-  D: 'right',
-  // Cyrillic
-  ц: 'up',
-  Ц: 'up',
-  ы: 'down',
-  Ы: 'down',
-  ф: 'left',
-  Ф: 'left',
-  в: 'right',
-  В: 'right',
 };
 
 export function useKeyboard() {
