@@ -220,7 +220,7 @@
 
 /* Animation for losing a resource */
 .resourceLost {
-  animation: resourceLose 0.6s ease-out;
+  animation: resourceLose 0.6s ease-out forwards;
 }
 
 @keyframes resourceLose {
@@ -294,38 +294,11 @@
   );
   border: 1px solid var(--color-gold-dim);
   border-radius: var(--radius-md);
-  animation: goldGlow 2.5s ease-in-out infinite;
-  position: relative;
-  overflow: hidden;
-}
-
-.goldSection::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(201, 162, 39, 0.1) 50%,
-    transparent 100%
-  );
-  animation: goldShimmer 3s ease-in-out infinite;
-}
-
-@keyframes goldShimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  box-shadow: 0 0 15px rgba(201, 162, 39, 0.2);
 }
 
 .goldIcon {
   font-size: 22px;
-  animation: goldIconFloat 2s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes goldIconFloat {
-  0%, 100% { transform: translateY(0) rotate(-5deg); }
-  50% { transform: translateY(-3px) rotate(5deg); }
 }
 
 .goldText {
@@ -336,22 +309,6 @@
   letter-spacing: 0.2em;
   text-transform: uppercase;
   text-shadow: 0 0 10px rgba(201, 162, 39, 0.4);
-  position: relative;
-  z-index: 1;
-}
-
-@keyframes goldGlow {
-  0%, 100% {
-    box-shadow:
-      0 0 10px rgba(201, 162, 39, 0.2),
-      inset 0 0 10px rgba(201, 162, 39, 0.05);
-  }
-  50% {
-    box-shadow:
-      0 0 20px rgba(201, 162, 39, 0.4),
-      0 0 40px rgba(201, 162, 39, 0.1),
-      inset 0 0 15px rgba(201, 162, 39, 0.1);
-  }
 }
 
 /* ─────────────────── Empty State ─────────────────── */

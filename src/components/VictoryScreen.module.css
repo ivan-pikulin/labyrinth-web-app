@@ -25,12 +25,7 @@
   max-width: 400px;
   width: 90%;
   text-align: center;
-  animation: glowPulse 2s infinite;
-}
-
-@keyframes glowPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(212, 168, 73, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(212, 168, 73, 0.5); }
+  box-shadow: 0 0 30px rgba(212, 168, 73, 0.4);
 }
 
 .stars {
@@ -94,6 +89,36 @@
 
 .mapInfo p {
   margin-bottom: 4px;
+}
+
+.mapToggleBtn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-family: var(--font-body);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  margin-bottom: 16px;
+}
+
+.mapToggleBtn:hover {
+  border-color: var(--color-gold-dim);
+  color: var(--color-text-primary);
+}
+
+.mapContainer {
+  margin-bottom: 24px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modalWide {
+  max-width: 90vw;
+  width: auto;
+  min-width: 400px;
 }
 
 .newGameBtn {

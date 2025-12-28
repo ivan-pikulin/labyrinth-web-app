@@ -73,7 +73,22 @@ export function createGame(config: GameConfig = {}): GameState {
 }
 
 export function getCell(state: GameState, pos: Position): Cell {
-  return state.labyrinth.cells[pos.z][pos.y][pos.x];
+  const floor = state.labyrinth.cells[pos.z];
+  if (!floor) {
+    console.error('Invalid floor:', pos.z, 'floors available:', state.labyrinth.cells.length);
+    throw new Error(`Invalid position: floor ${pos.z} does not exist`);
+  }
+  const row = floor[pos.y];
+  if (!row) {
+    console.error('Invalid row:', pos.y, 'at floor:', pos.z);
+    throw new Error(`Invalid position: row ${pos.y} does not exist on floor ${pos.z}`);
+  }
+  const cell = row[pos.x];
+  if (!cell) {
+    console.error('Invalid cell:', pos.x, 'at row:', pos.y, 'floor:', pos.z);
+    throw new Error(`Invalid position: cell ${pos.x} does not exist at row ${pos.y}, floor ${pos.z}`);
+  }
+  return cell;
 }
 
 export function getCurrentCell(state: GameState): Cell {
@@ -195,26 +210,15 @@ export function describeLocation(state: GameState): LogMessage[] {
 // Handle moving
 export function move(state: GameState, direction: Direction): GameState {
   if (state.ended) return state;
+
+  // Always show player's intention first
+  let newState = addLog(state, 'narrative', `Иду ${getDirectionNameTo(direction)}`, 'player');
+
   if (!canMove(state, direction)) {
-    return addLog(state, 'info', 'Там стена. Идти нельзя.');
+    return addLog(newState, 'info', 'Там стена. Идти нельзя.');
   }
 
-  const { dx, dy } = DIRECTION_VECTORS[direction];
-  const newPos: Position = {
-    x: state.player.position.x + dx,
-    y: state.player.position.y + dy,
-    z: state.player.position.z,
-  };
-
-  let newState: GameState = {
-    ...state,
-    player: { ...state.player, position: newPos },
-    actionMode: 'go',
-  };
-
-  newState = addLog(newState, 'narrative', `Иду ${getDirectionNameTo(direction)}`, 'player');
-
-  // Check for exit with gold
+  // Check for exit first (before changing position)
   const cell = getCurrentCell(state);
   if (cell.walls[direction] === 'exit') {
     if (state.player.hasGold) {
@@ -226,9 +230,23 @@ export function move(state: GameState, direction: Direction): GameState {
         currentScreen: 'victory',
       };
     } else {
-      newState = addLog(newState, 'info', 'Вы видите выход, но вам нужно золото!');
+      // Don't move outside the labyrinth - just show message and stay
+      return addLog(newState, 'info', 'Вы видите выход, но вам нужно золото!');
     }
   }
+
+  const { dx, dy } = DIRECTION_VECTORS[direction];
+  const newPos: Position = {
+    x: newState.player.position.x + dx,
+    y: newState.player.position.y + dy,
+    z: newState.player.position.z,
+  };
+
+  newState = {
+    ...newState,
+    player: { ...newState.player, position: newPos },
+    actionMode: 'go',
+  };
 
   // Process cell effects
   newState = processCellEffects(newState);
@@ -303,8 +321,12 @@ function processCellEffects(state: GameState): GameState {
   // Pickup items
   for (const item of cell.items) {
     if (item.type === 'gold' && !newState.player.hasGold) {
-      newState = { ...newState, player: { ...newState.player, hasGold: true } };
-      newState = addLog(newState, 'success', '✨ Вы подобрали ЗОЛОТО!');
+      if (newState.player.health < newState.player.maxHealth) {
+        newState = addLog(newState, 'info', '✨ Здесь золото, но вы слишком слабы, чтобы его нести. Восстановите здоровье!');
+      } else {
+        newState = { ...newState, player: { ...newState.player, hasGold: true } };
+        newState = addLog(newState, 'success', '✨ Вы подобрали ЗОЛОТО!');
+      }
     }
     if (item.type === 'dragon_ring') {
       newState = {
@@ -333,9 +355,14 @@ function processCellEffects(state: GameState): GameState {
 
   // Remove picked up items from cell
   const cellRef = newState.labyrinth.cells[newState.player.position.z][newState.player.position.y][newState.player.position.x];
-  cellRef.items = cellRef.items.filter(
-    (item) => item.type !== 'gold' && item.type !== 'dragon_ring' && item.type !== 'bag'
-  );
+  cellRef.items = cellRef.items.filter((item) => {
+    // Gold stays if player couldn't pick it up
+    if (item.type === 'gold') {
+      return !newState.player.hasGold;
+    }
+    // Other auto-pickup items are always removed
+    return item.type !== 'dragon_ring' && item.type !== 'bag';
+  });
 
   // Add location description
   const locationLogs = describeLocation(newState);

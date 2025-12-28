@@ -56,16 +56,19 @@ function IconRow({ filledIcon, emptyIcon, current, max, changed, label }: IconRo
   const icons = [];
   for (let i = 0; i < max; i++) {
     const isFilled = i < current;
-    const isAnimating = changed && i === current - (changed === 'increase' ? 1 : 0);
+    const isGained = changed === 'increase' && i === current - 1;
     const isLost = changed === 'decrease' && i === current;
+
+    // When losing, show filled icon with loss animation (it will animate out)
+    const showFilled = isFilled || isLost;
 
     icons.push(
       <span
         key={i}
-        className={`${styles.resourceIcon} ${isFilled ? styles.resourceFilled : styles.resourceEmpty} ${isAnimating && changed === 'increase' ? styles.resourceGained : ''} ${isLost ? styles.resourceLost : ''}`}
+        className={`${styles.resourceIcon} ${showFilled ? styles.resourceFilled : styles.resourceEmpty} ${isGained ? styles.resourceGained : ''} ${isLost ? styles.resourceLost : ''}`}
         aria-label={isFilled ? `${label} ${i + 1}` : `Пусто ${i + 1}`}
       >
-        {isFilled ? filledIcon : emptyIcon}
+        {showFilled ? filledIcon : emptyIcon}
       </span>
     );
   }

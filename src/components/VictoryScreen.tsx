@@ -1,4 +1,6 @@
 import { useGameStore } from '@/store/gameStore';
+import { useState } from 'react';
+import { LabyrinthMap } from './LabyrinthMap';
 import styles from './VictoryScreen.module.css';
 
 export function VictoryScreen() {
@@ -7,10 +9,11 @@ export function VictoryScreen() {
   const kills = useGameStore((s) => s.kills);
   const labyrinth = useGameStore((s) => s.labyrinth);
   const newGame = useGameStore((s) => s.newGame);
+  const [showMap, setShowMap] = useState(false);
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.modal}>
+      <div className={`${styles.modal} ${showMap ? styles.modalWide : ''}`}>
         <div className={styles.stars}>✧ ✧ ✧</div>
         <h2 className={styles.title}>ᚷ ПОБЕДА ᚷ</h2>
 
@@ -40,6 +43,16 @@ export function VictoryScreen() {
           <p>Лабиринт: {labyrinth.width}×{labyrinth.height}</p>
           {labyrinth.floors > 1 && <p>Этажей: {labyrinth.floors}</p>}
         </div>
+
+        <button className={styles.mapToggleBtn} onClick={() => setShowMap(!showMap)}>
+          {showMap ? '📜 Скрыть карту' : '🗺️ Показать карту'}
+        </button>
+
+        {showMap && (
+          <div className={styles.mapContainer}>
+            <LabyrinthMap />
+          </div>
+        )}
 
         <button className={styles.newGameBtn} onClick={() => newGame()}>
           🔄 Новая игра
