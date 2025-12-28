@@ -137,7 +137,6 @@ if (typeof window !== 'undefined') {
     console.log('Walls:', cell.walls);
     console.log('Building:', cell.building);
     console.log('Items:', cell.items);
-    console.log('Trap:', cell.trap);
     console.groupEnd();
 
     return cell;
