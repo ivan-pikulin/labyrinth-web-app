@@ -1,0 +1,115 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 23, 20, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--color-bg-secondary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  max-width: 300px;
+  width: 90%;
+}
+
+.title {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 24px;
+  color: var(--color-text-primary);
+  margin-bottom: 32px;
+  letter-spacing: 0.1em;
+}
+
+.shaft {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.shaft::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--color-border);
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+.floorBtn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-size: 18px;
+  transition: all var(--transition-fast);
+}
+
+.floorBtn:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  background: var(--color-bg-secondary);
+}
+
+.floorBtn.current {
+  border-color: var(--color-gold);
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-glow-gold);
+}
+
+.floorBtn:disabled {
+  cursor: default;
+}
+
+.floorLabel {
+  min-width: 40px;
+  text-align: center;
+}
+
+.marker {
+  font-size: 12px;
+  color: var(--color-gold);
+}
+
+.leaveBtn {
+  width: 100%;
+  padding: 12px;
+  background: var(--color-bg-tertiary);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-primary);
+  font-family: var(--font-heading);
+  font-size: 14px;
+  transition: all var(--transition-fast);
+}
+
+.leaveBtn:hover {
+  border-color: var(--color-text-secondary);
+  background: var(--color-bg-secondary);
+}

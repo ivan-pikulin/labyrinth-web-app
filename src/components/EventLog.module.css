@@ -1,0 +1,107 @@
+.container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message {
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  animation: fadeIn 0.3s ease-out;
+  line-height: 1.5;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Narrative - default beige */
+.narrative {
+  color: var(--color-text-primary);
+}
+
+/* Info - muted */
+.info {
+  color: var(--color-text-secondary);
+  font-size: 14px;
+}
+
+/* Heat - dragon nearby */
+.heat {
+  color: var(--color-fire);
+  border-left: 3px solid var(--color-fire);
+  background: rgba(232, 90, 44, 0.1);
+}
+
+/* Draft - cold/pit nearby */
+.draft {
+  color: var(--color-cold);
+  border-left: 3px solid var(--color-cold);
+  background: rgba(74, 124, 140, 0.1);
+}
+
+/* Gaze - archer nearby */
+.gaze {
+  color: var(--color-gaze);
+  border-left: 3px solid var(--color-gaze);
+  background: rgba(124, 90, 140, 0.1);
+}
+
+/* Success - hit, pickup */
+.success {
+  color: var(--color-gold);
+  border-left: 3px solid var(--color-gold);
+  background: rgba(212, 168, 73, 0.1);
+}
+
+/* Damage - taking damage */
+.damage {
+  color: var(--color-health);
+  border-left: 3px solid var(--color-health);
+  background: rgba(139, 77, 77, 0.15);
+  font-weight: 500;
+}
+
+/* Death */
+.death {
+  color: #fff;
+  background: rgba(139, 77, 77, 0.3);
+  border: 1px solid var(--color-health);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  padding: 16px;
+}
+
+/* Victory */
+.victory {
+  color: var(--color-gold);
+  background: rgba(212, 168, 73, 0.2);
+  border: 1px solid var(--color-gold);
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 18px;
+  padding: 16px;
+  animation: glowPulse 2s infinite;
+}
+
+/* Error */
+.error {
+  color: var(--color-fire);
+  font-size: 14px;
+}
+
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 5px rgba(212, 168, 73, 0.3); }
+  50% { box-shadow: 0 0 15px rgba(212, 168, 73, 0.5); }
+}
